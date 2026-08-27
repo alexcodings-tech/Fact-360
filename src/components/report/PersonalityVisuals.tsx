@@ -1,5 +1,6 @@
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList,
 } from "recharts";
 
 /** ---------- data helpers (all values derived from the real answers) ---------- */

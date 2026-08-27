@@ -9,38 +9,510 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SampleReportsRouteImport } from './routes/sample-reports'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as FaqsRouteImport } from './routes/faqs'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AssessmentsRouteImport } from './routes/assessments'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as RespondTokenRouteImport } from './routes/respond.$token'
+import { Route as ReportIdRouteImport } from './routes/report.$id'
+import { Route as DashboardThankYouRouteImport } from './routes/dashboard.thank-you'
+import { Route as DashboardSupportRouteImport } from './routes/dashboard.support'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
+import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
+import { Route as DashboardPurchasesRouteImport } from './routes/dashboard.purchases'
+import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
+import { Route as DashboardFact360RouteImport } from './routes/dashboard.fact360'
+import { Route as DashboardAssessmentsRouteImport } from './routes/dashboard.assessments'
+import { Route as DashboardActionPlanRouteImport } from './routes/dashboard.action-plan'
+import { Route as AssessmentsIdRouteImport } from './routes/assessments.$id'
+import { Route as ApiQuestionIconsRouteImport } from './routes/api.question-icons'
+import { Route as AdminWhatsappRouteImport } from './routes/admin.whatsapp'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminAssessmentsRouteImport } from './routes/admin.assessments'
+import { Route as AdminOrganisationsIndexRouteImport } from './routes/admin.organisations.index'
+import { Route as ReportLandscapeIdRouteImport } from './routes/report.landscape.$id'
+import { Route as DashboardTakeIdRouteImport } from './routes/dashboard.take.$id'
+import { Route as DashboardReportIdRouteImport } from './routes/dashboard.report.$id'
+import { Route as AdminReportAttemptIdRouteImport } from './routes/admin.report.$attemptId'
+import { Route as AdminOrganisationsIdRouteImport } from './routes/admin.organisations.$id'
 
+const SampleReportsRoute = SampleReportsRouteImport.update({
+  id: '/sample-reports',
+  path: '/sample-reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssessmentsRoute = AssessmentsRouteImport.update({
+  id: '/assessments',
+  path: '/assessments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const RespondTokenRoute = RespondTokenRouteImport.update({
+  id: '/respond/$token',
+  path: '/respond/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportIdRoute = ReportIdRouteImport.update({
+  id: '/report/$id',
+  path: '/report/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardThankYouRoute = DashboardThankYouRouteImport.update({
+  id: '/thank-you',
+  path: '/thank-you',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSupportRoute = DashboardSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReportsRoute = DashboardReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardPurchasesRoute = DashboardPurchasesRouteImport.update({
+  id: '/purchases',
+  path: '/purchases',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardProfileRoute = DashboardProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardFact360Route = DashboardFact360RouteImport.update({
+  id: '/fact360',
+  path: '/fact360',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardAssessmentsRoute = DashboardAssessmentsRouteImport.update({
+  id: '/assessments',
+  path: '/assessments',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardActionPlanRoute = DashboardActionPlanRouteImport.update({
+  id: '/action-plan',
+  path: '/action-plan',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const AssessmentsIdRoute = AssessmentsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AssessmentsRoute,
+} as any)
+const ApiQuestionIconsRoute = ApiQuestionIconsRouteImport.update({
+  id: '/api/question-icons',
+  path: '/api/question-icons',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminWhatsappRoute = AdminWhatsappRouteImport.update({
+  id: '/whatsapp',
+  path: '/whatsapp',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAssessmentsRoute = AdminAssessmentsRouteImport.update({
+  id: '/assessments',
+  path: '/assessments',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOrganisationsIndexRoute = AdminOrganisationsIndexRouteImport.update({
+  id: '/organisations/',
+  path: '/organisations/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ReportLandscapeIdRoute = ReportLandscapeIdRouteImport.update({
+  id: '/report/landscape/$id',
+  path: '/report/landscape/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardTakeIdRoute = DashboardTakeIdRouteImport.update({
+  id: '/take/$id',
+  path: '/take/$id',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReportIdRoute = DashboardReportIdRouteImport.update({
+  id: '/report/$id',
+  path: '/report/$id',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const AdminReportAttemptIdRoute = AdminReportAttemptIdRouteImport.update({
+  id: '/report/$attemptId',
+  path: '/report/$attemptId',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOrganisationsIdRoute = AdminOrganisationsIdRouteImport.update({
+  id: '/organisations/$id',
+  path: '/organisations/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/assessments': typeof AssessmentsRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/faqs': typeof FaqsRoute
+  '/pricing': typeof PricingRoute
+  '/sample-reports': typeof SampleReportsRoute
+  '/admin/assessments': typeof AdminAssessmentsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/whatsapp': typeof AdminWhatsappRoute
+  '/api/question-icons': typeof ApiQuestionIconsRoute
+  '/assessments/$id': typeof AssessmentsIdRoute
+  '/dashboard/action-plan': typeof DashboardActionPlanRoute
+  '/dashboard/assessments': typeof DashboardAssessmentsRoute
+  '/dashboard/fact360': typeof DashboardFact360Route
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/purchases': typeof DashboardPurchasesRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/thank-you': typeof DashboardThankYouRoute
+  '/report/$id': typeof ReportIdRoute
+  '/respond/$token': typeof RespondTokenRoute
+  '/admin/': typeof AdminIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/admin/organisations/$id': typeof AdminOrganisationsIdRoute
+  '/admin/report/$attemptId': typeof AdminReportAttemptIdRoute
+  '/dashboard/report/$id': typeof DashboardReportIdRoute
+  '/dashboard/take/$id': typeof DashboardTakeIdRoute
+  '/report/landscape/$id': typeof ReportLandscapeIdRoute
+  '/admin/organisations/': typeof AdminOrganisationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/assessments': typeof AssessmentsRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
+  '/faqs': typeof FaqsRoute
+  '/pricing': typeof PricingRoute
+  '/sample-reports': typeof SampleReportsRoute
+  '/admin/assessments': typeof AdminAssessmentsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/whatsapp': typeof AdminWhatsappRoute
+  '/api/question-icons': typeof ApiQuestionIconsRoute
+  '/assessments/$id': typeof AssessmentsIdRoute
+  '/dashboard/action-plan': typeof DashboardActionPlanRoute
+  '/dashboard/assessments': typeof DashboardAssessmentsRoute
+  '/dashboard/fact360': typeof DashboardFact360Route
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/purchases': typeof DashboardPurchasesRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/thank-you': typeof DashboardThankYouRoute
+  '/report/$id': typeof ReportIdRoute
+  '/respond/$token': typeof RespondTokenRoute
+  '/admin': typeof AdminIndexRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/admin/organisations/$id': typeof AdminOrganisationsIdRoute
+  '/admin/report/$attemptId': typeof AdminReportAttemptIdRoute
+  '/dashboard/report/$id': typeof DashboardReportIdRoute
+  '/dashboard/take/$id': typeof DashboardTakeIdRoute
+  '/report/landscape/$id': typeof ReportLandscapeIdRoute
+  '/admin/organisations': typeof AdminOrganisationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/assessments': typeof AssessmentsRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/faqs': typeof FaqsRoute
+  '/pricing': typeof PricingRoute
+  '/sample-reports': typeof SampleReportsRoute
+  '/admin/assessments': typeof AdminAssessmentsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/whatsapp': typeof AdminWhatsappRoute
+  '/api/question-icons': typeof ApiQuestionIconsRoute
+  '/assessments/$id': typeof AssessmentsIdRoute
+  '/dashboard/action-plan': typeof DashboardActionPlanRoute
+  '/dashboard/assessments': typeof DashboardAssessmentsRoute
+  '/dashboard/fact360': typeof DashboardFact360Route
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/purchases': typeof DashboardPurchasesRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/thank-you': typeof DashboardThankYouRoute
+  '/report/$id': typeof ReportIdRoute
+  '/respond/$token': typeof RespondTokenRoute
+  '/admin/': typeof AdminIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/admin/organisations/$id': typeof AdminOrganisationsIdRoute
+  '/admin/report/$attemptId': typeof AdminReportAttemptIdRoute
+  '/dashboard/report/$id': typeof DashboardReportIdRoute
+  '/dashboard/take/$id': typeof DashboardTakeIdRoute
+  '/report/landscape/$id': typeof ReportLandscapeIdRoute
+  '/admin/organisations/': typeof AdminOrganisationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/assessments'
+    | '/auth'
+    | '/contact'
+    | '/dashboard'
+    | '/faqs'
+    | '/pricing'
+    | '/sample-reports'
+    | '/admin/assessments'
+    | '/admin/users'
+    | '/admin/whatsapp'
+    | '/api/question-icons'
+    | '/assessments/$id'
+    | '/dashboard/action-plan'
+    | '/dashboard/assessments'
+    | '/dashboard/fact360'
+    | '/dashboard/profile'
+    | '/dashboard/purchases'
+    | '/dashboard/reports'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/thank-you'
+    | '/report/$id'
+    | '/respond/$token'
+    | '/admin/'
+    | '/dashboard/'
+    | '/admin/organisations/$id'
+    | '/admin/report/$attemptId'
+    | '/dashboard/report/$id'
+    | '/dashboard/take/$id'
+    | '/report/landscape/$id'
+    | '/admin/organisations/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/assessments'
+    | '/auth'
+    | '/contact'
+    | '/faqs'
+    | '/pricing'
+    | '/sample-reports'
+    | '/admin/assessments'
+    | '/admin/users'
+    | '/admin/whatsapp'
+    | '/api/question-icons'
+    | '/assessments/$id'
+    | '/dashboard/action-plan'
+    | '/dashboard/assessments'
+    | '/dashboard/fact360'
+    | '/dashboard/profile'
+    | '/dashboard/purchases'
+    | '/dashboard/reports'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/thank-you'
+    | '/report/$id'
+    | '/respond/$token'
+    | '/admin'
+    | '/dashboard'
+    | '/admin/organisations/$id'
+    | '/admin/report/$attemptId'
+    | '/dashboard/report/$id'
+    | '/dashboard/take/$id'
+    | '/report/landscape/$id'
+    | '/admin/organisations'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/assessments'
+    | '/auth'
+    | '/contact'
+    | '/dashboard'
+    | '/faqs'
+    | '/pricing'
+    | '/sample-reports'
+    | '/admin/assessments'
+    | '/admin/users'
+    | '/admin/whatsapp'
+    | '/api/question-icons'
+    | '/assessments/$id'
+    | '/dashboard/action-plan'
+    | '/dashboard/assessments'
+    | '/dashboard/fact360'
+    | '/dashboard/profile'
+    | '/dashboard/purchases'
+    | '/dashboard/reports'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/thank-you'
+    | '/report/$id'
+    | '/respond/$token'
+    | '/admin/'
+    | '/dashboard/'
+    | '/admin/organisations/$id'
+    | '/admin/report/$attemptId'
+    | '/dashboard/report/$id'
+    | '/dashboard/take/$id'
+    | '/report/landscape/$id'
+    | '/admin/organisations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AssessmentsRoute: typeof AssessmentsRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ContactRoute: typeof ContactRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
+  FaqsRoute: typeof FaqsRoute
+  PricingRoute: typeof PricingRoute
+  SampleReportsRoute: typeof SampleReportsRoute
+  ApiQuestionIconsRoute: typeof ApiQuestionIconsRoute
+  ReportIdRoute: typeof ReportIdRoute
+  RespondTokenRoute: typeof RespondTokenRoute
+  ReportLandscapeIdRoute: typeof ReportLandscapeIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sample-reports': {
+      id: '/sample-reports'
+      path: '/sample-reports'
+      fullPath: '/sample-reports'
+      preLoaderRoute: typeof SampleReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assessments': {
+      id: '/assessments'
+      path: '/assessments'
+      fullPath: '/assessments'
+      preLoaderRoute: typeof AssessmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +520,260 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/respond/$token': {
+      id: '/respond/$token'
+      path: '/respond/$token'
+      fullPath: '/respond/$token'
+      preLoaderRoute: typeof RespondTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/report/$id': {
+      id: '/report/$id'
+      path: '/report/$id'
+      fullPath: '/report/$id'
+      preLoaderRoute: typeof ReportIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/thank-you': {
+      id: '/dashboard/thank-you'
+      path: '/thank-you'
+      fullPath: '/dashboard/thank-you'
+      preLoaderRoute: typeof DashboardThankYouRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/support': {
+      id: '/dashboard/support'
+      path: '/support'
+      fullPath: '/dashboard/support'
+      preLoaderRoute: typeof DashboardSupportRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/reports': {
+      id: '/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/purchases': {
+      id: '/dashboard/purchases'
+      path: '/purchases'
+      fullPath: '/dashboard/purchases'
+      preLoaderRoute: typeof DashboardPurchasesRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/fact360': {
+      id: '/dashboard/fact360'
+      path: '/fact360'
+      fullPath: '/dashboard/fact360'
+      preLoaderRoute: typeof DashboardFact360RouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/assessments': {
+      id: '/dashboard/assessments'
+      path: '/assessments'
+      fullPath: '/dashboard/assessments'
+      preLoaderRoute: typeof DashboardAssessmentsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/action-plan': {
+      id: '/dashboard/action-plan'
+      path: '/action-plan'
+      fullPath: '/dashboard/action-plan'
+      preLoaderRoute: typeof DashboardActionPlanRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/assessments/$id': {
+      id: '/assessments/$id'
+      path: '/$id'
+      fullPath: '/assessments/$id'
+      preLoaderRoute: typeof AssessmentsIdRouteImport
+      parentRoute: typeof AssessmentsRoute
+    }
+    '/api/question-icons': {
+      id: '/api/question-icons'
+      path: '/api/question-icons'
+      fullPath: '/api/question-icons'
+      preLoaderRoute: typeof ApiQuestionIconsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/whatsapp': {
+      id: '/admin/whatsapp'
+      path: '/whatsapp'
+      fullPath: '/admin/whatsapp'
+      preLoaderRoute: typeof AdminWhatsappRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/assessments': {
+      id: '/admin/assessments'
+      path: '/assessments'
+      fullPath: '/admin/assessments'
+      preLoaderRoute: typeof AdminAssessmentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/organisations/': {
+      id: '/admin/organisations/'
+      path: '/organisations'
+      fullPath: '/admin/organisations/'
+      preLoaderRoute: typeof AdminOrganisationsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/report/landscape/$id': {
+      id: '/report/landscape/$id'
+      path: '/report/landscape/$id'
+      fullPath: '/report/landscape/$id'
+      preLoaderRoute: typeof ReportLandscapeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/take/$id': {
+      id: '/dashboard/take/$id'
+      path: '/take/$id'
+      fullPath: '/dashboard/take/$id'
+      preLoaderRoute: typeof DashboardTakeIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/report/$id': {
+      id: '/dashboard/report/$id'
+      path: '/report/$id'
+      fullPath: '/dashboard/report/$id'
+      preLoaderRoute: typeof DashboardReportIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/admin/report/$attemptId': {
+      id: '/admin/report/$attemptId'
+      path: '/report/$attemptId'
+      fullPath: '/admin/report/$attemptId'
+      preLoaderRoute: typeof AdminReportAttemptIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/organisations/$id': {
+      id: '/admin/organisations/$id'
+      path: '/organisations/$id'
+      fullPath: '/admin/organisations/$id'
+      preLoaderRoute: typeof AdminOrganisationsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminAssessmentsRoute: typeof AdminAssessmentsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminWhatsappRoute: typeof AdminWhatsappRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminOrganisationsIdRoute: typeof AdminOrganisationsIdRoute
+  AdminReportAttemptIdRoute: typeof AdminReportAttemptIdRoute
+  AdminOrganisationsIndexRoute: typeof AdminOrganisationsIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAssessmentsRoute: AdminAssessmentsRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminWhatsappRoute: AdminWhatsappRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminOrganisationsIdRoute: AdminOrganisationsIdRoute,
+  AdminReportAttemptIdRoute: AdminReportAttemptIdRoute,
+  AdminOrganisationsIndexRoute: AdminOrganisationsIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface AssessmentsRouteChildren {
+  AssessmentsIdRoute: typeof AssessmentsIdRoute
+}
+
+const AssessmentsRouteChildren: AssessmentsRouteChildren = {
+  AssessmentsIdRoute: AssessmentsIdRoute,
+}
+
+const AssessmentsRouteWithChildren = AssessmentsRoute._addFileChildren(
+  AssessmentsRouteChildren,
+)
+
+interface DashboardRouteChildren {
+  DashboardActionPlanRoute: typeof DashboardActionPlanRoute
+  DashboardAssessmentsRoute: typeof DashboardAssessmentsRoute
+  DashboardFact360Route: typeof DashboardFact360Route
+  DashboardProfileRoute: typeof DashboardProfileRoute
+  DashboardPurchasesRoute: typeof DashboardPurchasesRoute
+  DashboardReportsRoute: typeof DashboardReportsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardSupportRoute: typeof DashboardSupportRoute
+  DashboardThankYouRoute: typeof DashboardThankYouRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardReportIdRoute: typeof DashboardReportIdRoute
+  DashboardTakeIdRoute: typeof DashboardTakeIdRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardActionPlanRoute: DashboardActionPlanRoute,
+  DashboardAssessmentsRoute: DashboardAssessmentsRoute,
+  DashboardFact360Route: DashboardFact360Route,
+  DashboardProfileRoute: DashboardProfileRoute,
+  DashboardPurchasesRoute: DashboardPurchasesRoute,
+  DashboardReportsRoute: DashboardReportsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardSupportRoute: DashboardSupportRoute,
+  DashboardThankYouRoute: DashboardThankYouRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardReportIdRoute: DashboardReportIdRoute,
+  DashboardTakeIdRoute: DashboardTakeIdRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AssessmentsRoute: AssessmentsRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ContactRoute: ContactRoute,
+  DashboardRoute: DashboardRouteWithChildren,
+  FaqsRoute: FaqsRoute,
+  PricingRoute: PricingRoute,
+  SampleReportsRoute: SampleReportsRoute,
+  ApiQuestionIconsRoute: ApiQuestionIconsRoute,
+  ReportIdRoute: ReportIdRoute,
+  RespondTokenRoute: RespondTokenRoute,
+  ReportLandscapeIdRoute: ReportLandscapeIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

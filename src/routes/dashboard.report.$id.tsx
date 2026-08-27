@@ -40,18 +40,18 @@ function Report() {
   const printRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
 
-  const handleDownload = async () => {
-    if (!printRef.current) return;
+  // Download = native A4 print preview (Save as PDF). Keeps text crisp and
+  // fills every A4 page instead of pasting a shrunken screenshot per page.
+  const handleDownload = () => {
     setExporting(true);
-    try {
-      const { exportPagesToPdf } = await import("@/lib/pdf-export");
-      await exportPagesToPdf(printRef.current, "FACT360-Report", "portrait");
-    } catch (e) {
-      console.error(e);
+    const prevTitle = document.title;
+    document.title = "FACT360-Report";
+    // let the button state paint before the modal print dialog blocks the thread
+    setTimeout(() => {
       window.print();
-    } finally {
+      document.title = prevTitle;
       setExporting(false);
-    }
+    }, 100);
   };
 
   const fn = useServerFn(getReport);

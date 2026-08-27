@@ -130,19 +130,36 @@ function Report() {
         @media print {
           /* margin:0 removes the browser's date/title/URL header & footer */
           @page { size: A4 portrait; margin: 0; }
-          html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
+          html, body {
+            height: auto !important; overflow: visible !important;
+            background: #fff !important; margin: 0 !important; padding: 0 !important;
+          }
           html, body, * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
           .no-print, nav[role="navigation"] { display: none !important; }
           /* neutralise app-shell layout so every page flows into the print stream */
           body * { position: static !important; }
+          main, .flex-1 { padding: 0 !important; margin: 0 !important; }
+
+          /* Each section becomes one full A4 sheet, content spread top-to-bottom */
           .print-page {
             break-after: page; page-break-after: always;
-            padding: 16mm 14mm 18mm 14mm;
+            break-inside: avoid; page-break-inside: avoid;
             box-sizing: border-box;
-            width: 100%;
+            width: 210mm;
+            height: 297mm;
+            padding: 12mm 12mm 12mm 12mm;
+            margin: 0 !important;
+            display: flex !important;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 6mm;
+            overflow: hidden;
           }
           .print-page:last-of-type { break-after: auto; page-break-after: auto; }
-          .print-page > * { break-inside: avoid; page-break-inside: avoid; }
+          .print-page > * { break-inside: avoid; page-break-inside: avoid; flex: 1 1 auto; }
+          /* cards stretch so no half-empty sheets */
+          .print-page > * > [data-slot="card-content"] { height: 100%; }
+          .print-page .grid { break-inside: avoid; page-break-inside: avoid; }
         }
       `}</style>
 

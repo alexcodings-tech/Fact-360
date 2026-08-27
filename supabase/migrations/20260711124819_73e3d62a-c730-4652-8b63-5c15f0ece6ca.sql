@@ -1,0 +1,1 @@
+UPDATE public.assessments SET price = 500 WHERE is_active = true;

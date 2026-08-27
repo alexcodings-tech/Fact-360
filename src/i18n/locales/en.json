@@ -1,0 +1,231 @@
+{
+  "nav": {
+    "home": "Home",
+    "assessments": "Assessments",
+    "sampleReports": "Sample Reports",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "signup": "Sign Up",
+    "language": "Language"
+  },
+  "hero": {
+    "eyebrow": "Understand. Improve. Grow.",
+    "title_line1": "360° Business Assessment",
+    "title_line2": "& Advisory Platform",
+    "subtitle": "Comprehensive diagnostics. AI-powered insights. Actionable recommendations for sustainable growth - built for SMEs, leaders and consultants.",
+    "feature_science": "Science-backed assessments",
+    "feature_ai": "AI-powered insights",
+    "feature_actions": "Actionable recommendations",
+    "feature_reports": "Professional reports",
+    "cta_explore": "Explore Assessments",
+    "cta_sample": "View Sample Report",
+    "stat_assessments": "Assessments",
+    "stat_reports": "Reports",
+    "stat_csat": "CSAT",
+    "trusted": "Trusted by Consultants, Coaches & Leading Publications"
+  },
+  "method": {
+    "eyebrow": "Our Method",
+    "title": "A Five-Step Journey, One Continuous Loop",
+    "subtitle": "From choosing the right assessment to measurable transformation — every step is orchestrated around a single, repeatable method."
+  },
+  "market": {
+    "eyebrow": "Marketplace",
+    "title": "Find the Right Assessment for Your Business",
+    "subtitle": "Expert-designed, AI-powered insights to grow your business.",
+    "viewAll": "View All Assessments",
+    "start": "Start",
+    "mostPopular": "Most Popular",
+    "feature_pillars": "4 MBTI sections",
+    "feature_ai": "AI Summary",
+    "feature_pdf": "Landscape PDF",
+    "feature_action": "Action plan"
+  },
+  "why": {
+    "eyebrow": "Why FACT 360°",
+    "title": "Built for Decisions That Compound",
+    "subtitle": "We turn fuzzy gut-feel into a quantified, prioritized playbook — so leadership, ops and growth all pull in the same direction.",
+    "b1_t": "360° Multi-pillar visibility",
+    "b1_d": "Every business dimension scored against a maturity benchmark.",
+    "b2_t": "AI executive summaries",
+    "b2_d": "Plain-English narrative, ready for the boardroom.",
+    "b3_t": "Landscape PDF one-pager",
+    "b3_d": "Board-ready output you can share in a single link.",
+    "b4_t": "Prioritized action plan",
+    "b4_d": "Top moves ranked by impact, effort and timeframe."
+  },
+  "cta": {
+    "badge": "Start in minutes",
+    "title": "Ready to diagnose",
+    "title_accent": "your business?",
+    "subtitle": "Start with the FACT 360° Business Architecture Assessment and get a board-ready report with AI-generated recommendations.",
+    "start": "Start FACT 360°",
+    "pricing": "View Pricing",
+    "f1": "6 architecture pillars",
+    "f2": "AI executive summary",
+    "f3": "Landscape one-pager",
+    "f4": "Action plan & roadmap"
+  },
+  "about": {
+    "eyebrow": "About FACT 360°",
+    "title_pre": "A 360° lens on your",
+    "intro": "FACT 360° is an Erode-based advisory and assessment platform helping SMEs in textile, manufacturing and services diagnose their business architecture, leadership and culture — and convert those findings into measurable growth.",
+    "believe_title": "What we believe",
+    "believe_subtitle": "The principles we won't compromise on, no matter the engagement.",
+    "p1_t": "Clarity over cleverness",
+    "p1_d": "Every number should be defensible. Every insight usable by Monday morning.",
+    "p2_t": "Formulas beat opinions",
+    "p2_d": "A transparent scoring model builds long-term trust.",
+    "p3_t": "AI amplifies, not replaces",
+    "p3_d": "The best commentary respects the advisor's judgement.",
+    "p4_t": "Action, not admiration",
+    "p4_d": "We rank recommendations by impact and effort.",
+    "p5_t": "Growth compounds quietly",
+    "p5_d": "Small, well-sequenced moves outperform the annual offsite.",
+    "p6_t": "Data over drama",
+    "p6_d": "Decisions grounded in numbers survive the next quarter.",
+    "play_shuffle": "Play Shuffle",
+    "pause_shuffle": "Pause Shuffle",
+    "cta_title": "Ready to see your business in 360°?",
+    "cta_subtitle": "Start with the FACT 360° Business Architecture Assessment."
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's talk about your business.",
+    "subtitle": "Have a question about assessments, pricing or a custom engagement? We usually respond within one business day.",
+    "send": "Send Message",
+    "form_title": "Send us a message",
+    "subject": "Subject",
+    "message": "Message",
+    "subjectPlaceholder": "How can we help?",
+    "messagePlaceholder": "Tell us about your business...",
+    "thanks": "Thanks! We'll be in touch shortly.",
+    "office": "Office",
+    "officeHours": "Office hours",
+    "officeHoursText": "Mon – Sat · 9:30 AM – 6:30 PM IST"
+  },
+  "footer": {
+    "tagline": "360° Business Assessment & Advisory Platform. Understand. Improve. Grow.",
+    "product": "Product",
+    "company": "Company",
+    "getInTouch": "Get in touch"
+  },
+  "assessment": {
+    "start": "Start Assessment",
+    "minutes": "min",
+    "questions": "questions",
+    "purchaseProfile": "Details for purchase and AI report",
+    "buyNow": "Buy Now",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit & Generate Report",
+    "progress": "answered",
+    "likert": {
+      "1": "Strongly Disagree",
+      "2": "Disagree",
+      "3": "Not Sure",
+      "4": "Agree",
+      "5": "Strongly Agree"
+    }
+  },
+  "report": {
+    "your_type": "Your Personality Type",
+    "executive_summary": "Executive Summary",
+    "strengths": "Strengths",
+    "gaps": "Growth Areas",
+    "action_plan": "Action Plan",
+    "download": "Download PDF"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "full_name": "Full Name",
+    "designation": "Designation",
+    "company": "Company",
+    "phone": "Phone",
+    "language": "Preferred Language",
+    "create_account": "Create Account"
+  },
+  "categories": {
+    "Business": "Business",
+    "Leadership": "Leadership",
+    "HR": "HR",
+    "Finance": "Finance",
+    "Sales": "Sales",
+    "Operations": "Operations",
+    "Personality": "Personality"
+  },
+  "catalog": {
+    "fact-360": {
+      "name": "FACT 360° MBTI Personality",
+      "tagline": "Discover your workplace personality code",
+      "description": "An 80-question MBTI-style assessment across Energy, Learning, Decisions and Planning, with an AI report tailored to your designation."
+    },
+    "leadership-360": {
+      "name": "360° Personality & Leadership",
+      "tagline": "Inspiring People. Building Trust. Creating Impact.",
+      "description": "A leadership impact assessment that maps signature traits, development areas and practical next steps."
+    },
+    "financial-health": { "name": "Financial Performance", "description": "Analyze financial health, working capital, cost control, profitability and ROI discipline." },
+    "hr-people": { "name": "HR & People Assessment", "description": "Assess people practices, culture, talent management and workplace effectiveness." },
+    "sales-effectiveness": { "name": "Sales Effectiveness", "description": "Diagnose sales pipeline, team performance, conversion rates and customer acquisition discipline." },
+    "operations-excellence": { "name": "Operations Excellence", "description": "Evaluate operational efficiency, capacity utilization, quality systems and process maturity." }
+  },
+  "assessmentsPage": {
+    "title": "Assessment Marketplace",
+    "subtitle": "Pick a science-backed assessment, complete the questionnaire and get an AI-powered advisory report.",
+    "search": "Search assessments…",
+    "all": "All",
+    "loading": "Loading marketplace…",
+    "viewDetails": "View Details",
+    "empty": "No assessments match your search."
+  },
+  "sampleReports": {
+    "eyebrow": "Sample Reports",
+    "title": "See the output before you commit.",
+    "subtitle": "Every FACT 360° assessment produces a polished executive landscape one-pager and a deep multi-page advisory report.",
+    "viewLandscape": "View Landscape",
+    "fullReport": "Full Report",
+    "samples": {
+      "fact-360": { "name": "FACT 360° Business Architecture", "desc": "Complete business health scorecard, radar view, root-cause analysis and director's conclusion.", "pages": "1-page landscape + 18-page detail" },
+      "leadership-360": { "name": "360° Leadership & Personality", "desc": "Leadership profile, signature traits, shadow risks and next-level mandate.", "pages": "1-page landscape + 12-page detail" }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Simple, transparent pricing",
+    "subtitle": "Pay per assessment or scale as a consultant. No hidden fees, no surprise upgrades.",
+    "offerBadge": "Limited Time Offer",
+    "offerTitle": "FACT 360° Complete Business Program",
+    "offerMeta": "One-time Payment · Lifetime Access",
+    "includes": "Includes",
+    "includesList": ["All FACT 360° assessments", "Landscape PDF + full detailed reports", "Future updates", "Priority action plan per assessment", "Live Q&A + community"],
+    "bonus": "Bonus Included",
+    "bonusList": ["Consultant onboarding toolkit", "AI prompt library & workflows", "Exclusive live strategy sessions"],
+    "enroll": "Yes! I Want Lifetime Access — Enroll Now",
+    "guarantee": "7-Day Refund Guarantee",
+    "plans": {
+      "Starter": { "name": "Starter", "period": "/ assessment", "desc": "A single department deep-dive.", "cta": "Choose Starter", "features": ["1 assessment", "AI insights", "Landscape one-pager PDF", "Email support", "Standard turnaround"] },
+      "Growth": { "name": "Growth", "period": "/ bundle", "desc": "Most popular — full business 360°.", "cta": "Choose Growth", "features": ["FACT 360° + Leadership 360°", "AI executive summary", "Landscape + detailed PDF", "Prioritized action plan", "Roadmap & re-assessment credit", "Priority support"] },
+      "Consultant": { "name": "Consultant", "period": "", "desc": "For coaches, advisors & firms.", "cta": "Talk to Sales", "features": ["Unlimited assessments", "White-label reports", "Client workspace & seats", "Custom formula engine", "Dedicated success manager", "API & webhook access"] }
+    }
+  },
+  "testimonials": {
+    "eyebrow": "Success Stories",
+    "title_pre": "What our",
+    "title_accent": "clients",
+    "title_post": "say",
+    "items": [
+      { "quote": "FACT 360° gave us a single source of truth across leadership, finance and operations. The landscape report became our quarterly board artifact within a week.", "role": "CEO · Northwind Industries" },
+      { "quote": "The AI executive summary saved our consulting team days of drafting. Our clients get insight-rich reports that actually drive action.", "role": "Managing Partner · Growth Labs" },
+      { "quote": "For the first time, our department heads all see the same scorecard. The gap analysis paid for the platform ten times over in Q1.", "role": "COO · Erode Textile Group" },
+      { "quote": "The MBTI-backed personality report gave me a new lens on how I lead my team. Practical, specific and beautifully presented.", "role": "Solopreneur · Pondicherry" },
+      { "quote": "We onboarded our first three retainer clients using the FACT 360° discovery framework and proposal template.", "role": "Business Consultant · Kochi" },
+      { "quote": "The dashboard and the action plan gave me the confidence to actually pull the trigger on hiring my first COO.", "role": "Founder · Chennai" }
+    ]
+  }
+}

@@ -5,6 +5,7 @@ export async function exportPagesToPdf(
   container: HTMLElement,
   fileName: string,
   orientation: "portrait" | "landscape" = "portrait",
+  output: "save" | "blob" = "save",
 ) {
   const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
     import("jspdf"),
@@ -37,6 +38,8 @@ export async function exportPagesToPdf(
     if (i > 0) pdf.addPage("a4", orientation);
     pdf.addImage(img, "JPEG", x, y, w, h, undefined, "FAST");
   }
+
+  if (output === "blob") return pdf.output("blob");
 
   pdf.save(fileName.endsWith(".pdf") ? fileName : `${fileName}.pdf`);
 }

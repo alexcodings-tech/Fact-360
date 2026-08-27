@@ -14,6 +14,7 @@ import {
   toPoles, behaviourMetrics, clamp, bandLabel,
   TemperamentDonut, MeterRow, DimensionRing, PreferenceBars, SectionBarChart,
 } from "@/components/report/PersonalityVisuals";
+import { exportPagesToPdf } from "@/lib/pdf-export";
 
 export const Route = createFileRoute("/dashboard/report/$id")({
   ssr: false,
@@ -40,18 +41,36 @@ function Report() {
   const printRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
 
-  // Download = native A4 print preview (Save as PDF). Keeps text crisp and
-  // fills every A4 page instead of pasting a shrunken screenshot per page.
-  const handleDownload = () => {
+  // Build the PDF ourselves instead of relying on the browser print writer,
+  // which can produce an incomplete/corrupt download with chart-heavy pages.
+  const handleDownload = async () => {
+    if (!printRef.current || exporting) return;
     setExporting(true);
-    const prevTitle = document.title;
-    document.title = "FACT360-Report";
-    // let the button state paint before the modal print dialog blocks the thread
-    setTimeout(() => {
-      window.print();
-      document.title = prevTitle;
+    const preview = window.open("", "_blank");
+    if (preview) {
+      preview.document.title = "Preparing FACT360 report";
+      preview.document.body.textContent = "Preparing your A4 report…";
+    }
+
+    try {
+      const blob = await exportPagesToPdf(printRef.current, "FACT360-Report.pdf", "portrait", "blob");
+      if (!blob) throw new Error("PDF generation returned no document");
+      const url = URL.createObjectURL(blob);
+      if (preview) {
+        preview.location.replace(url);
+      } else {
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "FACT360-Report.pdf";
+        link.click();
+      }
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch (error) {
+      preview?.close();
+      console.error("Unable to generate report PDF", error);
+    } finally {
       setExporting(false);
-    }, 100);
+    }
   };
 
   const fn = useServerFn(getReport);

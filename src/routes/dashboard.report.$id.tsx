@@ -12,7 +12,7 @@ import { WhatsAppModules } from "@/components/site/WhatsAppModules";
 import { RadarScore } from "@/components/charts/RadarScore";
 import {
   toPoles, behaviourMetrics, clamp, bandLabel,
-  TemperamentDonut, MeterRow, DimensionRing,
+  TemperamentDonut, MeterRow, DimensionRing, PreferenceBars, SectionBarChart,
 } from "@/components/report/PersonalityVisuals";
 
 export const Route = createFileRoute("/dashboard/report/$id")({

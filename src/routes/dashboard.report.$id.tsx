@@ -334,6 +334,32 @@ function Report() {
         </>
       )}
 
+      {/* Fallback visuals when personality dimensions are unavailable */}
+      {!poles && sections.length > 0 && (
+        <section className="print-page space-y-4">
+          <Card className="border-border/60">
+            <CardContent className="p-6">
+              <h2 className="font-bold text-primary">Section Performance</h2>
+              <SectionBarChart
+                height={Math.max(200, sections.length * 38 + 60)}
+                data={sections.map((s) => ({ name: s.name, value: Math.round(s.score) }))}
+              />
+            </CardContent>
+          </Card>
+          <Card className="border-border/60">
+            <CardContent className="p-6">
+              <h3 className="font-bold text-primary">Balance View</h3>
+              <RadarScore
+                data={sections.map((s) => ({ area: s.name, value: Math.round(s.score) }))}
+                height={280}
+                color="var(--color-primary)"
+              />
+            </CardContent>
+          </Card>
+        </section>
+      )}
+
+
 
       {/* Page 1 — Overall score + executive summary */}
       <section className="print-page space-y-4">

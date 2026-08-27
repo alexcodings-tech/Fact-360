@@ -277,6 +277,37 @@ function Report() {
           </section>
 
 
+          {/* Visual Page 4 — Preference strength + section performance */}
+          <section className="print-page space-y-4">
+            <Card className="border-border/60">
+              <CardContent className="p-6">
+                <h2 className="font-bold text-primary">Preference Strength</h2>
+                <p className="text-xs text-muted-foreground mt-1">
+                  How strongly you lean toward each side of the four dimensions.
+                </p>
+                <div className="mt-4">
+                  <PreferenceBars poles={poles} />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/60">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-primary">
+                  {sections.length ? "Section Performance" : "Behavioural Index"}
+                </h3>
+                <SectionBarChart
+                  height={sections.length ? Math.max(200, sections.length * 38 + 60) : 300}
+                  data={
+                    sections.length
+                      ? sections.map((s) => ({ name: s.name, value: Math.round(s.score) }))
+                      : behaviour.map((b) => ({ name: b.label, value: b.value }))
+                  }
+                />
+              </CardContent>
+            </Card>
+          </section>
+
           {/* Visual Page 5 — Behaviour & working style */}
           <section className="print-page space-y-4">
             <Card className="border-border/60">

@@ -171,3 +171,29 @@ export function DimensionRing({ label, value, pole }: { label: string; value: nu
     </div>
   );
 }
+
+/** Horizontal bar chart of section (or any label/value) scores. */
+export function SectionBarChart({
+  data,
+  height = 260,
+}: {
+  data: { name: string; value: number }[];
+  height?: number;
+}) {
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <BarChart data={data} layout="vertical" margin={{ left: 8, right: 28, top: 8, bottom: 8 }}>
+        <CartesianGrid horizontal={false} stroke="var(--color-border)" />
+        <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10 }} />
+        <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
+        <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+        <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={16}>
+          {data.map((d, i) => (
+            <Cell key={i} fill={i % 2 === 0 ? "var(--color-primary)" : "var(--color-accent)"} />
+          ))}
+          <LabelList dataKey="value" position="right" formatter={(v: any) => `${v}%`} style={{ fontSize: 10, fill: "var(--color-muted-foreground)" }} />
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}

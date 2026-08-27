@@ -186,16 +186,14 @@ export function DimensionSplitChart({ poles, height = 240 }: { poles: PoleSet; h
         <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10 }} />
         <YAxis type="category" dataKey="name" width={150} tick={{ fontSize: 10 }} />
         <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-        {DIM_ROWS.map((d, i) => (
-          <>
-            <Bar key={d.left} dataKey={d.left} stackId={`s${i}`} fill="var(--color-primary)">
-              <LabelList dataKey={d.left} position="insideLeft" formatter={(v: any) => (v > 12 ? `${v}%` : "")} style={{ fontSize: 10, fill: "#fff" }} />
-            </Bar>
-            <Bar key={d.right} dataKey={d.right} stackId={`s${i}`} fill="var(--color-accent)">
-              <LabelList dataKey={d.right} position="insideRight" formatter={(v: any) => (v > 12 ? `${v}%` : "")} style={{ fontSize: 10, fill: "#fff" }} />
-            </Bar>
-          </>
-        ))}
+        {DIM_ROWS.flatMap((d, i) => [
+          <Bar key={d.left} dataKey={d.left} stackId={`s${i}`} fill="var(--color-primary)">
+            <LabelList dataKey={d.left} position="insideLeft" formatter={(v: any) => (v > 12 ? `${v}%` : "")} style={{ fontSize: 10, fill: "#fff" }} />
+          </Bar>,
+          <Bar key={d.right} dataKey={d.right} stackId={`s${i}`} fill="var(--color-accent)">
+            <LabelList dataKey={d.right} position="insideRight" formatter={(v: any) => (v > 12 ? `${v}%` : "")} style={{ fontSize: 10, fill: "#fff" }} />
+          </Bar>,
+        ])}
       </BarChart>
     </ResponsiveContainer>
   );

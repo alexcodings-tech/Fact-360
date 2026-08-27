@@ -13,6 +13,7 @@ import { RadarScore } from "@/components/charts/RadarScore";
 import {
   toPoles, behaviourMetrics, clamp, bandLabel,
   TemperamentDonut, MeterRow, DimensionRing, PreferenceBars, SectionBarChart,
+  DimensionSplitChart, CapabilityRadial, ProfileAreaChart,
 } from "@/components/report/PersonalityVisuals";
 import { exportPagesToPdf } from "@/lib/pdf-export";
 
@@ -228,10 +229,10 @@ function Report() {
                   </div>
                 </div>
                 <div className="p-6 grid grid-cols-4 gap-4 justify-items-center">
-                  <DimensionRing label="Energy & Interaction" pole={poles.E >= poles.I ? "E" : "I"} value={Math.max(poles.E, poles.I)} />
-                  <DimensionRing label="Information & Learning" pole={poles.S >= poles.N ? "S" : "N"} value={Math.max(poles.S, poles.N)} />
-                  <DimensionRing label="Decision Making" pole={poles.T >= poles.F ? "T" : "F"} value={Math.max(poles.T, poles.F)} />
-                  <DimensionRing label="Lifestyle & Planning" pole={poles.J >= poles.P ? "J" : "P"} value={Math.max(poles.J, poles.P)} />
+                  <DimensionRing label="Energy & Interaction" value={Math.max(poles.E, poles.I)} />
+                  <DimensionRing label="Information & Learning" value={Math.max(poles.S, poles.N)} />
+                  <DimensionRing label="Decision Making" value={Math.max(poles.T, poles.F)} />
+                  <DimensionRing label="Lifestyle & Planning" value={Math.max(poles.J, poles.P)} />
                 </div>
               </CardContent>
             </Card>
@@ -239,6 +240,7 @@ function Report() {
             <Card className="border-border/60">
               <CardContent className="p-6">
                 <h3 className="font-bold text-primary">Dimension Balance</h3>
+                <DimensionSplitChart poles={poles} height={210} />
                 <div className="mt-4 grid sm:grid-cols-2 gap-x-6 gap-y-3">
                   <MeterRow label={poles.E >= poles.I ? "Extraversion" : "Introversion"} value={Math.max(poles.E, poles.I)} />
                   <MeterRow label={poles.S >= poles.N ? "Sensing" : "iNtuition"} value={Math.max(poles.S, poles.N)} tone="accent" />
@@ -267,6 +269,12 @@ function Report() {
               <CardContent className="p-6">
                 <h3 className="font-bold text-primary">Work-style Distribution</h3>
                 <TemperamentDonut poles={poles} height={240} />
+              </CardContent>
+            </Card>
+            <Card className="border-border/60">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-primary">Top Capabilities</h3>
+                <CapabilityRadial data={rankedBehaviour.map((b) => ({ name: b.label, value: b.value }))} height={250} />
               </CardContent>
             </Card>
           </section>
@@ -349,6 +357,7 @@ function Report() {
             <Card className="border-border/60">
               <CardContent className="p-6">
                 <h2 className="font-bold text-primary">Behaviour & Working Style</h2>
+                <ProfileAreaChart data={behaviour.map((b) => ({ name: b.label, value: b.value }))} height={230} />
                 <div className="mt-4 grid md:grid-cols-2 gap-6">
                   <div className="space-y-3">
                     {behaviour.slice(0, Math.ceil(behaviour.length / 2)).map((b) => <MeterRow key={b.label} label={b.label} value={b.value} />)}

@@ -1,6 +1,7 @@
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList,
+  RadialBarChart, RadialBar, AreaChart, Area, PolarAngleAxis,
 } from "recharts";
 
 /** ---------- data helpers (all values derived from the real answers) ---------- */
@@ -154,7 +155,7 @@ export function MeterRow({ label, value, note, tone = "primary" }: { label: stri
   );
 }
 
-export function DimensionRing({ label, value, pole }: { label: string; value: number; pole: string }) {
+export function DimensionRing({ label, value }: { label: string; value: number; pole?: string }) {
   const deg = (value / 100) * 360;
   return (
     <div className="flex flex-col items-center gap-1.5">
@@ -163,12 +164,79 @@ export function DimensionRing({ label, value, pole }: { label: string; value: nu
         style={{ background: `conic-gradient(var(--color-accent) ${deg}deg, var(--color-secondary) ${deg}deg)` }}
       >
         <div className="h-14 w-14 rounded-full bg-card grid place-items-center">
-          <span className="text-base font-extrabold text-primary leading-none">{pole}</span>
-          <span className="text-[10px] text-muted-foreground">{value}%</span>
+          <span className="text-lg font-extrabold text-primary leading-none">{value}%</span>
+          <span className="text-[9px] text-muted-foreground">{bandLabel(value)}</span>
         </div>
       </div>
       <span className="text-[10px] font-semibold text-primary text-center leading-tight">{label}</span>
     </div>
+  );
+}
+
+/** Stacked 100% bars showing how each dimension splits between its two styles. */
+export function DimensionSplitChart({ poles, height = 240 }: { poles: PoleSet; height?: number }) {
+  const data = DIM_ROWS.map((d) => ({
+    name: `${d.left} / ${d.right}`,
+    [d.left]: poles[d.lk as keyof PoleSet],
+    [d.right]: poles[d.rk as keyof PoleSet],
+  }));
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <BarChart data={data} layout="vertical" margin={{ left: 8, right: 16, top: 8, bottom: 8 }} barSize={22}>
+        <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10 }} />
+        <YAxis type="category" dataKey="name" width={150} tick={{ fontSize: 10 }} />
+        <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+        {DIM_ROWS.map((d, i) => (
+          <>
+            <Bar key={d.left} dataKey={d.left} stackId={`s${i}`} fill="var(--color-primary)">
+              <LabelList dataKey={d.left} position="insideLeft" formatter={(v: any) => (v > 12 ? `${v}%` : "")} style={{ fontSize: 10, fill: "#fff" }} />
+            </Bar>
+            <Bar key={d.right} dataKey={d.right} stackId={`s${i}`} fill="var(--color-accent)">
+              <LabelList dataKey={d.right} position="insideRight" formatter={(v: any) => (v > 12 ? `${v}%` : "")} style={{ fontSize: 10, fill: "#fff" }} />
+            </Bar>
+          </>
+        ))}
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}
+
+/** Radial gauge set for the top behavioural capabilities. */
+export function CapabilityRadial({ data, height = 260 }: { data: { name: string; value: number }[]; height?: number }) {
+  const colors = ["var(--color-primary)", "var(--color-accent)", "#5b6b8c", "#8fa0bf", "#c9d2e3"];
+  const rows = data.slice(0, 5).map((d, i) => ({ ...d, fill: colors[i % colors.length] }));
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <RadialBarChart data={rows} innerRadius="28%" outerRadius="100%" startAngle={90} endAngle={-270}>
+        <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
+        <RadialBar dataKey="value" background cornerRadius={6} />
+        <Legend iconType="circle" layout="vertical" align="right" verticalAlign="middle"
+          wrapperStyle={{ fontSize: 11 }}
+          payload={rows.map((r) => ({ value: `${r.name} (${r.value}%)`, type: "circle", color: r.fill as string, id: r.name }))} />
+        <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+      </RadialBarChart>
+    </ResponsiveContainer>
+  );
+}
+
+/** Smooth profile curve across every behavioural measure. */
+export function ProfileAreaChart({ data, height = 220 }: { data: { name: string; value: number }[]; height?: number }) {
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <AreaChart data={data} margin={{ left: 0, right: 12, top: 12, bottom: 8 }}>
+        <defs>
+          <linearGradient id="profileFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--color-accent)" stopOpacity={0.75} />
+            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity={0.12} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid stroke="var(--color-border)" vertical={false} />
+        <XAxis dataKey="name" tick={{ fontSize: 9 }} interval={0} angle={-18} textAnchor="end" height={54} />
+        <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} width={30} />
+        <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+        <Area type="monotone" dataKey="value" stroke="var(--color-primary)" strokeWidth={2} fill="url(#profileFill)" />
+      </AreaChart>
+    </ResponsiveContainer>
   );
 }
 

@@ -34,6 +34,7 @@ export async function exportPagesToPdf(
       backgroundColor: "#ffffff",
       logging: false,
       windowWidth: A4_CSS_WIDTH,
+      ignoreElements: (el) => el.classList?.contains("no-print"),
     });
   } finally {
     container.style.width = prevWidth;

@@ -44,6 +44,17 @@ export async function exportPagesToPdf(
     cssBoundaries.add(rect.bottom - containerTop);
   }
 
+  // Hard breaks: every `.print-page` section always starts on a new PDF page.
+  const cssHardBreaks: number[] = [];
+  for (const el of Array.from(container.querySelectorAll<HTMLElement>(".print-page"))) {
+    if (el.classList.contains("no-print")) continue;
+    const rect = el.getBoundingClientRect();
+    if (rect.height <= 0) continue;
+    const top = rect.top - containerTop;
+    cssHardBreaks.push(top);
+    cssBoundaries.add(top);
+  }
+
   let canvas: HTMLCanvasElement;
   let renderedWidth = A4_CSS_WIDTH;
   try {

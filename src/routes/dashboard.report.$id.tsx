@@ -454,9 +454,10 @@ function Report() {
         </div>
       </section>
 
-      {/* Page 3 — Your FACT 360 personality profile */}
-      {profile && (
-        <section className="print-page space-y-4">
+
+        {/* Personality profile continues on the same page */}
+        {profile && (
+        <>
           <Card className={`${theme?.ring} ${theme?.bg}`}>
             <CardContent className="p-6">
               <div className="flex flex-wrap items-center gap-3">

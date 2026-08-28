@@ -507,43 +507,8 @@ function Report() {
         )}
       </section>
 
-      {/* Page 7 — Action plan (+ development focus) */}
-      {profile && (
-        <section className="print-page space-y-4 hidden">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card className="border-indigo-200 bg-indigo-50/70">
-              <CardContent className="p-6">
-                <h3 className="font-bold text-indigo-700">Development Focus</h3>
-                <ul className="mt-3 space-y-1.5 text-sm">
-                  {profile.development.map((s) => <li key={s} className="flex gap-2"><span className="text-indigo-600">→</span>{s}</li>)}
-                </ul>
-              </CardContent>
-            </Card>
-            <Card className="border-primary/30 bg-primary text-primary-foreground">
-              <CardContent className="p-6">
-                <h3 className="font-bold text-accent">FACT 360 Workplace Insight</h3>
-                <p className="mt-3 text-sm"><span className="font-semibold text-accent">Best contribution:</span> {profile.bestContribution}</p>
-                <p className="mt-2 text-sm"><span className="font-semibold text-accent">Watch area:</span> {profile.watchArea}</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {r.growth_opportunity && (
-            <Card className="border-border/60">
-              <CardContent className="p-6">
-                <h2 className="font-bold text-primary">Growth Opportunity</h2>
-                <div className="mt-4 rounded-2xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground p-6">
-                  <p className="text-lg">{r.growth_opportunity}</p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </section>
-      )}
-
-
-      {/* Page 5 — Action plan */}
-      <section className="print-page">
+      {/* Page 7 — Action plan (+ development focus & workplace insight) */}
+      <section className="print-page space-y-4">
         <Card className="border-sky-200 bg-sky-50/60">
           <CardContent className="p-6">
             <div className="flex items-center gap-2"><Target className="h-5 w-5 text-sky-600" /><h2 className="font-bold text-sky-700">Action Plan</h2></div>
@@ -562,10 +527,30 @@ function Report() {
             </div>
           </CardContent>
         </Card>
+
+        {profile && (
+          <div className="grid md:grid-cols-2 gap-4">
+            <Card className="border-indigo-200 bg-indigo-50/70">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-indigo-700">Development Focus</h3>
+                <ul className="mt-3 space-y-1.5 text-sm">
+                  {profile.development.map((s) => <li key={s} className="flex gap-2"><span className="text-indigo-600">→</span>{s}</li>)}
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="border-primary/30 bg-primary text-primary-foreground">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-accent">FACT 360 Workplace Insight</h3>
+                <p className="mt-3 text-sm"><span className="font-semibold text-accent">Best contribution:</span> {profile.bestContribution}</p>
+                <p className="mt-2 text-sm"><span className="font-semibold text-accent">Watch area:</span> {profile.watchArea}</p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </section>
 
-      {/* Growth opportunity only gets its own page when there is no profile page 4 */}
-      {!profile && r.growth_opportunity && (
+      {/* Page 8 — Growth opportunity */}
+      {r.growth_opportunity && (
         <section className="print-page">
           <Card className="border-border/60">
             <CardContent className="p-6">
@@ -577,6 +562,7 @@ function Report() {
           </Card>
         </section>
       )}
+
 
 
       <WhatsAppModules />

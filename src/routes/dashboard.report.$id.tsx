@@ -11,9 +11,9 @@ import { getPersonalityProfile, ROLE_THEME } from "@/data/personality-profiles";
 import { WhatsAppModules } from "@/components/site/WhatsAppModules";
 import { RadarScore } from "@/components/charts/RadarScore";
 import {
-  toPoles, behaviourMetrics, clamp, bandLabel,
+  toPoles, behaviourMetrics, clamp,
   TemperamentDonut, MeterRow, DimensionRing, PreferenceBars, SectionBarChart,
-  DimensionSplitChart, CapabilityRadial, ProfileAreaChart,
+  DimensionSplitChart, ProfileAreaChart,
 } from "@/components/report/PersonalityVisuals";
 import { BulletGraph, ContributionWaterfall, DotPlot, DumbbellChart, PoleHeatmap, ScoreColumnChart } from "@/components/report/AssessmentChartGallery";
 import { exportPagesToPdf, type PdfPreviewResult } from "@/lib/pdf-export";
@@ -134,13 +134,6 @@ function Report() {
       ]
     : [];
   const rankedBehaviour = [...behaviour].sort((a, b) => b.value - a.value);
-  const strengthTitles = (profile?.strengths ?? strengths).slice(0, 6);
-  const strengthCards = strengthTitles.map((title, i) => ({
-    title,
-    value: rankedBehaviour[i % (rankedBehaviour.length || 1)]?.value ?? overall,
-    note: `Supported by your ${rankedBehaviour[i % (rankedBehaviour.length || 1)]?.label ?? "overall"} profile.`,
-  }));
-  const growthBars = [...behaviour].sort((a, b) => a.value - b.value).slice(0, 4);
   const weightedContributions = sections.map((section) => ({
     name: section.name,
     value: Math.round(section.score * (section.weight > 1 ? section.weight / 100 : section.weight) * 10) / 10,

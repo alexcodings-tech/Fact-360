@@ -130,7 +130,7 @@ export function ContributionWaterfall({ data }: { data: ScoreDatum[] }) {
     <div role="img" aria-label="Waterfall chart showing weighted contribution to the overall score">
       <div className="relative h-40 border-b border-l border-border">
         {segments.map((item, index) => (
-          <div key={item.name} className="absolute bottom-0 flex items-start justify-center pt-2 text-[9px] font-bold text-primary-foreground" style={{ left: `${item.start}%`, width: `${item.width}%`, height: `${Math.max(18, item.value / total * 250)}%`, background: `var(--color-chart-${index % 6 + 1})` }} title={`${item.name}: ${item.value.toFixed(1)} points`}>
+          <div key={item.name} className="absolute bottom-0 flex items-start justify-center pt-2 text-[9px] font-bold text-primary-foreground" style={{ left: `${item.start}%`, width: `${item.width}%`, height: `${Math.min(100, Math.max(18, item.value / total * 250))}%`, background: `var(--color-chart-${index % 6 + 1})` }} title={`${item.name}: ${item.value.toFixed(1)} points`}>
             {item.value.toFixed(1)}
           </div>
         ))}

@@ -2,12 +2,14 @@
 // A4 width and slices it into A4 pages. Cuts are made at safe element
 // boundaries so a card/section is never split across two pages — if a block
 // does not fit on the current page it moves entirely to the next one.
+export type PdfPreviewResult = { blob: Blob; pages: string[] };
+
 export async function exportPagesToPdf(
   container: HTMLElement,
   fileName: string,
   orientation: "portrait" | "landscape" = "portrait",
-  output: "save" | "blob" = "save",
-) {
+  output: "save" | "blob" | "preview" = "save",
+): Promise<Blob | PdfPreviewResult | void> {
   const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
     import("jspdf"),
     import("html2canvas-pro"),
@@ -43,7 +45,9 @@ export async function exportPagesToPdf(
   }
 
   let canvas: HTMLCanvasElement;
+  let renderedWidth = A4_CSS_WIDTH;
   try {
+    renderedWidth = container.offsetWidth;
     canvas = await html2canvas(container, {
       scale: 2,
       useCORS: true,
@@ -57,7 +61,7 @@ export async function exportPagesToPdf(
     container.style.maxWidth = prevMax;
   }
 
-  const pxPerCss = canvas.width / container.offsetWidth || 2;
+  const pxPerCss = canvas.width / renderedWidth || 2;
   const boundaries = [...cssBoundaries]
     .map((v) => Math.round(v * pxPerCss))
     .filter((v) => v > 0 && v < canvas.height)
@@ -69,6 +73,7 @@ export async function exportPagesToPdf(
 
   let y = 0;
   let pageIndex = 0;
+  const pages: string[] = [];
   while (y < canvas.height) {
     let cut = Math.min(y + pageHeightPx, canvas.height);
     if (cut < canvas.height) {
@@ -88,6 +93,7 @@ export async function exportPagesToPdf(
     ctx.drawImage(canvas, 0, y, canvas.width, sh, 0, 0, canvas.width, sh);
 
     const img = slice.toDataURL("image/jpeg", 0.92);
+    pages.push(img);
     if (pageIndex > 0) pdf.addPage("a4", orientation);
     pdf.addImage(img, "JPEG", margin, margin, maxW, maxH, undefined, "FAST");
 
@@ -95,7 +101,9 @@ export async function exportPagesToPdf(
     y = cut;
   }
 
-  if (output === "blob") return pdf.output("blob");
+  const blob = pdf.output("blob");
+  if (output === "preview") return { blob, pages };
+  if (output === "blob") return blob;
 
   pdf.save(fileName.endsWith(".pdf") ? fileName : `${fileName}.pdf`);
 }

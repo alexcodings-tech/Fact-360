@@ -82,6 +82,11 @@ export async function exportPagesToPdf(
   const scale = maxW / canvas.width; // mm per source pixel
   const pageHeightPx = Math.floor(maxH / scale);
 
+  const hardBreaks = cssHardBreaks
+    .map((v) => Math.round(v * pxPerCss))
+    .filter((v) => v > 0 && v < canvas.height)
+    .sort((a, b) => a - b);
+
   let y = 0;
   let pageIndex = 0;
   const pages: string[] = [];
@@ -92,6 +97,9 @@ export async function exportPagesToPdf(
       const candidates = boundaries.filter((b) => b > y + pageHeightPx * 0.35 && b <= cut);
       if (candidates.length) cut = candidates[candidates.length - 1]!;
     }
+    // A new report section always starts its own page.
+    const hard = hardBreaks.find((b) => b > y + 4 && b <= cut);
+    if (hard !== undefined) cut = hard;
     const sh = cut - y;
     if (sh <= 0) break;
 

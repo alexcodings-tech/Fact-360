@@ -503,12 +503,13 @@ function Report() {
             ))}
           </div>
 
-        </section>
-      )}
+        </>
+        )}
+      </section>
 
-      {/* Page 4 — Development focus, workplace insight & growth opportunity */}
+      {/* Page 7 — Action plan (+ development focus) */}
       {profile && (
-        <section className="print-page space-y-4 pt-6 print:pt-12">
+        <section className="print-page space-y-4 hidden">
           <div className="grid md:grid-cols-2 gap-4">
             <Card className="border-indigo-200 bg-indigo-50/70">
               <CardContent className="p-6">

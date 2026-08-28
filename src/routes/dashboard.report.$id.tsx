@@ -452,7 +452,7 @@ function Report() {
           </CardContent>
         </Card>
         </div>
-      </section>
+
 
 
         {/* Personality profile continues on the same page */}

@@ -306,49 +306,28 @@ function Report() {
           </section>
 
 
-          {/* Visual Page 4 — Preference strength + section performance */}
+          {/* Visual Page 4 — Section performance + behaviour & working style */}
           <section className="print-page space-y-4">
             <Card className="border-border/60">
               <CardContent className="p-6">
-                <h2 className="font-bold text-primary">Preference Strength</h2>
-                <p className="text-xs text-muted-foreground mt-1">
-                  How strongly you lean toward each side of the four dimensions.
-                </p>
-                <div className="mt-4">
-                  <PreferenceBars poles={poles} />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border/60">
-              <CardContent className="p-6">
-                <h3 className="font-bold text-primary">
+                <h2 className="font-bold text-primary">
                   {sections.length ? "Section Performance" : "Behavioural Index"}
-                </h3>
+                </h2>
                 <SectionBarChart
-                  height={sections.length ? Math.max(200, sections.length * 38 + 60) : 300}
+                  height={sections.length ? Math.max(180, sections.length * 34 + 50) : 260}
                   data={
                     sections.length
                       ? sections.map((s) => ({ name: s.name, value: Math.round(s.score) }))
                       : behaviour.map((b) => ({ name: b.label, value: b.value }))
                   }
                 />
-                {weightedContributions.length > 0 && (
-                  <div className="mt-4 border-t border-border pt-4">
-                    <h3 className="mb-3 text-sm font-bold text-primary">Weighted Score Waterfall</h3>
-                    <ContributionWaterfall data={weightedContributions} />
-                  </div>
-                )}
               </CardContent>
             </Card>
-          </section>
 
-          {/* Visual Page 5 — Behaviour & working style */}
-          <section className="print-page space-y-4">
             <Card className="border-border/60">
               <CardContent className="p-6">
                 <h2 className="font-bold text-primary">Behaviour & Working Style</h2>
-                <ProfileAreaChart data={behaviour.map((b) => ({ name: b.label, value: b.value }))} height={230} />
+                <ProfileAreaChart data={behaviour.map((b) => ({ name: b.label, value: b.value }))} height={210} />
                 <div className="mt-4 grid md:grid-cols-2 gap-6">
                   <div className="space-y-3">
                     {behaviour.slice(0, Math.ceil(behaviour.length / 2)).map((b) => <MeterRow key={b.label} label={b.label} value={b.value} />)}
@@ -357,13 +336,6 @@ function Report() {
                     {behaviour.slice(Math.ceil(behaviour.length / 2)).map((b) => <MeterRow key={b.label} label={b.label} value={b.value} />)}
                   </div>
                 </div>
-                {profile && (
-                  <div className="mt-5 grid sm:grid-cols-3 gap-3 text-xs">
-                    <div><div className="font-bold text-primary uppercase text-[10px]">Communication</div><p className="text-muted-foreground">{profile.communication}</p></div>
-                    <div><div className="font-bold text-primary uppercase text-[10px]">Workplace</div><p className="text-muted-foreground">{profile.workplace}</p></div>
-                    <div><div className="font-bold text-primary uppercase text-[10px]">Leadership</div><p className="text-muted-foreground">{profile.leadership}</p></div>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </section>

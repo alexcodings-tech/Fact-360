@@ -5,7 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { getReport } from "@/lib/assessments.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, ArrowLeft, Sparkles, TrendingUp, AlertTriangle, Target, Loader2, FileText } from "lucide-react";
+import { Download, ArrowLeft, Sparkles, TrendingUp, AlertTriangle, Target, Loader2, FileText, Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getPersonalityProfile, ROLE_THEME } from "@/data/personality-profiles";
 import { WhatsAppModules } from "@/components/site/WhatsAppModules";
@@ -15,7 +15,9 @@ import {
   TemperamentDonut, MeterRow, DimensionRing, PreferenceBars, SectionBarChart,
   DimensionSplitChart, CapabilityRadial, ProfileAreaChart,
 } from "@/components/report/PersonalityVisuals";
-import { exportPagesToPdf } from "@/lib/pdf-export";
+import { BulletGraph, ContributionWaterfall, DotPlot, DumbbellChart, PoleHeatmap, ScoreColumnChart } from "@/components/report/AssessmentChartGallery";
+import { exportPagesToPdf, type PdfPreviewResult } from "@/lib/pdf-export";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/dashboard/report/$id")({
   ssr: false,
@@ -41,37 +43,36 @@ function Report() {
   const { t } = useTranslation();
   const printRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [pdfPreview, setPdfPreview] = useState<PdfPreviewResult | null>(null);
 
   // Build the PDF ourselves instead of relying on the browser print writer,
   // which can produce an incomplete/corrupt download with chart-heavy pages.
-  const handleDownload = async () => {
+  const handlePreview = async () => {
     if (!printRef.current || exporting) return;
     setExporting(true);
-    const preview = window.open("", "_blank");
-    if (preview) {
-      preview.document.title = "Preparing FACT360 report";
-      preview.document.body.textContent = "Preparing your A4 report…";
-    }
-
     try {
-      const blob = await exportPagesToPdf(printRef.current, "FACT360-Report.pdf", "portrait", "blob");
-      if (!blob) throw new Error("PDF generation returned no document");
-      const url = URL.createObjectURL(blob);
-      if (preview) {
-        preview.location.replace(url);
-      } else {
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "FACT360-Report.pdf";
-        link.click();
-      }
-      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      const result = await exportPagesToPdf(printRef.current, "FACT360-Report.pdf", "portrait", "preview");
+      if (!result || result instanceof Blob) throw new Error("PDF preview generation returned no document");
+      setPdfPreview(result);
+      setPreviewOpen(true);
     } catch (error) {
-      preview?.close();
       console.error("Unable to generate report PDF", error);
     } finally {
       setExporting(false);
     }
+  };
+
+  const downloadPreview = () => {
+    if (!pdfPreview) return;
+    const url = URL.createObjectURL(pdfPreview.blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "FACT360-Report.pdf";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
   };
 
   const fn = useServerFn(getReport);
@@ -140,6 +141,10 @@ function Report() {
     note: `Supported by your ${rankedBehaviour[i % (rankedBehaviour.length || 1)]?.label ?? "overall"} profile.`,
   }));
   const growthBars = [...behaviour].sort((a, b) => a.value - b.value).slice(0, 4);
+  const weightedContributions = sections.map((section) => ({
+    name: section.name,
+    value: Math.round(section.score * (section.weight > 1 ? section.weight / 100 : section.weight) * 10) / 10,
+  }));
 
 
 
@@ -196,9 +201,9 @@ function Report() {
               <FileText className="h-4 w-4 mr-1" /> Landscape view
             </Link>
           </Button>
-          <Button className="bg-primary hover:bg-primary/90" onClick={handleDownload} disabled={exporting}>
-            {exporting ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Download className="h-4 w-4 mr-1" />}
-            {exporting ? "Preparing PDF..." : "Download PDF"}
+          <Button className="bg-primary hover:bg-primary/90" onClick={handlePreview} disabled={exporting}>
+            {exporting ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Eye className="h-4 w-4 mr-1" />}
+            {exporting ? "Preparing preview..." : "Preview PDF"}
           </Button>
         </div>
       </div>
@@ -247,6 +252,10 @@ function Report() {
                   <MeterRow label={poles.T >= poles.F ? "Thinking" : "Feeling"} value={Math.max(poles.T, poles.F)} />
                   <MeterRow label={poles.J >= poles.P ? "Judging" : "Perceiving"} value={Math.max(poles.J, poles.P)} tone="accent" />
                 </div>
+                <div className="mt-5 border-t border-border pt-4">
+                  <h3 className="mb-3 text-sm font-bold text-primary">Preference Dumbbell</h3>
+                  <DumbbellChart poles={poles} />
+                </div>
               </CardContent>
             </Card>
           </section>
@@ -273,48 +282,31 @@ function Report() {
             </Card>
             <Card className="border-border/60">
               <CardContent className="p-6">
-                <h3 className="font-bold text-primary">Top Capabilities</h3>
-                <CapabilityRadial data={rankedBehaviour.map((b) => ({ name: b.label, value: b.value }))} height={250} />
+                <h3 className="font-bold text-primary">Capability Dot Plot</h3>
+                <div className="mt-4"><DotPlot data={rankedBehaviour.map((b) => ({ name: b.label, value: b.value }))} /></div>
               </CardContent>
             </Card>
           </section>
 
-          {/* Visual Page 3 — Strengths + Growth areas */}
+          {/* Visual Page 3 — capability columns + score benchmarks */}
           <section className="print-page space-y-4">
+            <Card className="border-border/60">
+              <CardContent className="p-6">
+                <h2 className="font-bold text-primary">Behavioural Capability Columns</h2>
+                <ScoreColumnChart data={behaviour.map((b) => ({ name: b.label, value: b.value }))} height={280} />
+              </CardContent>
+            </Card>
             <div className="grid md:grid-cols-2 gap-4 items-start">
               <Card className="border-border/60">
                 <CardContent className="p-6">
-                  <h2 className="font-bold text-primary">Strength Profile</h2>
-                  <div className="mt-4 space-y-3">
-                    {strengthCards.map((s) => (
-                      <div key={s.title} className="rounded-lg border border-border bg-card p-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-semibold text-primary">{s.title}</span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-accent text-accent-foreground">{bandLabel(s.value)}</span>
-                        </div>
-                        <div className="mt-3 h-2.5 rounded-full bg-secondary overflow-hidden">
-                          <div className="h-full rounded-full bg-primary" style={{ width: `${s.value}%` }} />
-                        </div>
-                        <p className="mt-2 text-xs text-muted-foreground leading-snug">{s.note}</p>
-                      </div>
-                    ))}
-                  </div>
+                  <h2 className="font-bold text-primary">Bullet Graph</h2>
+                  <div className="mt-4"><BulletGraph data={behaviour.map((b) => ({ name: b.label, value: b.value }))} /></div>
                 </CardContent>
               </Card>
-
               <Card className="border-border/60">
                 <CardContent className="p-6">
-                  <h2 className="font-bold text-primary">Growth Areas</h2>
-                  <div className="mt-4 space-y-3">
-                    {growthBars.map((g) => <MeterRow key={g.label} label={g.label} value={g.value} tone="rose" note={`${bandLabel(g.value)} today`} />)}
-                  </div>
-                  <div className="mt-6 grid grid-cols-5 items-center gap-1 text-center">
-                    <div className="rounded-lg bg-secondary p-2 text-[10px] font-semibold text-primary">CURRENT</div>
-                    <div className="text-accent font-bold">→</div>
-                    <div className="rounded-lg bg-accent/20 p-2 text-[10px] font-semibold text-primary">DEVELOP</div>
-                    <div className="text-accent font-bold">→</div>
-                    <div className="rounded-lg bg-primary p-2 text-[10px] font-semibold text-primary-foreground">IMPROVE</div>
-                  </div>
+                  <h2 className="font-bold text-primary">Preference Heatmap</h2>
+                  <div className="mt-4"><PoleHeatmap poles={poles} /></div>
                 </CardContent>
               </Card>
             </div>
@@ -348,6 +340,12 @@ function Report() {
                       : behaviour.map((b) => ({ name: b.label, value: b.value }))
                   }
                 />
+                {weightedContributions.length > 0 && (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <h3 className="mb-3 text-sm font-bold text-primary">Weighted Score Waterfall</h3>
+                    <ContributionWaterfall data={weightedContributions} />
+                  </div>
+                )}
               </CardContent>
             </Card>
           </section>
@@ -615,6 +613,29 @@ function Report() {
 
 
       <WhatsAppModules />
+
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="no-print flex h-[94vh] max-w-5xl grid-rows-[auto_1fr_auto] gap-0 overflow-hidden p-0">
+          <DialogHeader className="border-b border-border px-6 py-4">
+            <DialogTitle>A4 print preview</DialogTitle>
+            <DialogDescription>{pdfPreview?.pages.length ?? 0} portrait pages · preview matches the downloaded PDF</DialogDescription>
+          </DialogHeader>
+          <div className="overflow-y-auto bg-muted p-4 md:p-8">
+            <div className="mx-auto max-w-[794px] space-y-6">
+              {pdfPreview?.pages.map((page, index) => (
+                <figure key={index} className="space-y-2">
+                  <img src={page} alt={`Report preview page ${index + 1}`} className="aspect-[210/297] w-full border border-border bg-card object-contain shadow-sm" />
+                  <figcaption className="text-center text-xs text-muted-foreground">Page {index + 1}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-end gap-2 border-t border-border bg-card px-6 py-4">
+            <Button variant="outline" onClick={() => setPreviewOpen(false)}>Close</Button>
+            <Button onClick={downloadPreview} disabled={!pdfPreview}><Download className="mr-2 h-4 w-4" />Download PDF</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -21,11 +21,12 @@ export function RadarScore({
 }) {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <RadarChart data={data} outerRadius="75%">
+      <RadarChart data={data} outerRadius="62%" margin={{ top: 18, right: 36, bottom: 18, left: 36 }}>
         <PolarGrid stroke="var(--color-border)" />
         <PolarAngleAxis
           dataKey="area"
-          tick={{ fill: "var(--color-foreground)", fontSize: 11, fontWeight: 600 }}
+          tick={{ fill: "var(--color-foreground)", fontSize: 10, fontWeight: 600 }}
+          tickLine={false}
         />
         <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: "var(--color-muted-foreground)", fontSize: 10 }} />
         <Radar

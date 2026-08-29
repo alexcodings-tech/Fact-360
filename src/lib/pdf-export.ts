@@ -1,7 +1,7 @@
-// Client-side PDF export: renders the whole report as one continuous canvas at
-// A4 width and slices it into A4 pages. Cuts are made at safe element
-// boundaries so a card/section is never split across two pages — if a block
-// does not fit on the current page it moves entirely to the next one.
+// Client-side PDF export: renders each `.print-page` section as its OWN A4
+// page. Every section is captured separately at A4 print width and scaled to
+// fit inside the printable area, so a section is never split across two pages
+// and the page order matches the on-screen section order exactly.
 export type PdfPreviewResult = { blob: Blob; pages: string[] };
 
 export async function exportPagesToPdf(
@@ -18,7 +18,7 @@ export async function exportPagesToPdf(
   const pdf = new jsPDF({ orientation, unit: "mm", format: "a4" });
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
-  const margin = 6;
+  const margin = 8;
   const maxW = pageW - margin * 2;
   const maxH = pageH - margin * 2;
 
@@ -29,95 +29,59 @@ export async function exportPagesToPdf(
   container.style.width = `${A4_CSS_WIDTH}px`;
   container.style.maxWidth = `${A4_CSS_WIDTH}px`;
 
-  // Collect break-safe boundaries (top/bottom of each block) in CSS px,
-  // measured while the container is at print width.
-  const containerTop = container.getBoundingClientRect().top;
-  const blocks: HTMLElement[] = Array.from(
-    container.querySelectorAll<HTMLElement>(".print-page > *, .print-block"),
-  );
-  const cssBoundaries = new Set<number>([0]);
-  for (const el of blocks) {
-    if (el.classList.contains("no-print")) continue;
-    const rect = el.getBoundingClientRect();
-    if (rect.height <= 0) continue;
-    cssBoundaries.add(rect.top - containerTop);
-    cssBoundaries.add(rect.bottom - containerTop);
-  }
+  const sections = Array.from(
+    container.querySelectorAll<HTMLElement>(".print-page"),
+  ).filter((el) => !el.classList.contains("no-print") && el.offsetHeight > 0);
 
-  // Hard breaks: every `.print-page` section always starts on a new PDF page.
-  const cssHardBreaks: number[] = [];
-  for (const el of Array.from(container.querySelectorAll<HTMLElement>(".print-page"))) {
-    if (el.classList.contains("no-print")) continue;
-    const rect = el.getBoundingClientRect();
-    if (rect.height <= 0) continue;
-    const top = rect.top - containerTop;
-    cssHardBreaks.push(top);
-    cssBoundaries.add(top);
-  }
+  const targets: HTMLElement[] = sections.length ? sections : [container];
 
-  let canvas: HTMLCanvasElement;
-  let renderedWidth = A4_CSS_WIDTH;
+  const pages: string[] = [];
   try {
-    renderedWidth = container.offsetWidth;
-    canvas = await html2canvas(container, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false,
-      windowWidth: A4_CSS_WIDTH,
-      ignoreElements: (el) => el.classList?.contains("no-print"),
-    });
+    for (let i = 0; i < targets.length; i++) {
+      const el = targets[i]!;
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+        windowWidth: A4_CSS_WIDTH,
+        ignoreElements: (node) => node.classList?.contains("no-print"),
+      });
+
+      // Fit the whole section inside the printable area (contain), keeping
+      // aspect ratio. Tall sections shrink instead of spilling to a new page.
+      const ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
+      const drawW = canvas.width * ratio;
+      const drawH = canvas.height * ratio;
+      const offsetX = margin + (maxW - drawW) / 2;
+      const offsetY = margin;
+
+      // Compose onto a full A4 canvas so the preview images are true A4 sheets.
+      const sheet = document.createElement("canvas");
+      const sheetScale = canvas.width / (drawW || 1);
+      sheet.width = Math.round(pageW * sheetScale);
+      sheet.height = Math.round(pageH * sheetScale);
+      const ctx = sheet.getContext("2d")!;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, sheet.width, sheet.height);
+      ctx.drawImage(
+        canvas,
+        Math.round(offsetX * sheetScale),
+        Math.round(offsetY * sheetScale),
+        Math.round(drawW * sheetScale),
+        Math.round(drawH * sheetScale),
+      );
+
+      const img = sheet.toDataURL("image/jpeg", 0.92);
+      pages.push(img);
+
+      if (i > 0) pdf.addPage("a4", orientation);
+      const sectionImg = canvas.toDataURL("image/jpeg", 0.92);
+      pdf.addImage(sectionImg, "JPEG", offsetX, offsetY, drawW, drawH, undefined, "FAST");
+    }
   } finally {
     container.style.width = prevWidth;
     container.style.maxWidth = prevMax;
-  }
-
-  const pxPerCss = canvas.width / renderedWidth || 2;
-  const boundaries = [...cssBoundaries]
-    .map((v) => Math.round(v * pxPerCss))
-    .filter((v) => v > 0 && v < canvas.height)
-    .sort((a, b) => a - b);
-
-  // Fit width to the printable area, then walk down in page-height chunks.
-  const scale = maxW / canvas.width; // mm per source pixel
-  const pageHeightPx = Math.floor(maxH / scale);
-
-  const hardBreaks = cssHardBreaks
-    .map((v) => Math.round(v * pxPerCss))
-    .filter((v) => v > 0 && v < canvas.height)
-    .sort((a, b) => a - b);
-
-  let y = 0;
-  let pageIndex = 0;
-  const pages: string[] = [];
-  while (y < canvas.height) {
-    let cut = Math.min(y + pageHeightPx, canvas.height);
-    if (cut < canvas.height) {
-      // Prefer the last block boundary that fits on this page.
-      const candidates = boundaries.filter((b) => b > y + pageHeightPx * 0.35 && b <= cut);
-      if (candidates.length) cut = candidates[candidates.length - 1]!;
-    }
-    // A new report section always starts its own page.
-    const hard = hardBreaks.find((b) => b > y + 4 && b <= cut);
-    if (hard !== undefined) cut = hard;
-    const sh = cut - y;
-    if (sh <= 0) break;
-
-    const slice = document.createElement("canvas");
-    slice.width = canvas.width;
-    slice.height = pageHeightPx; // full page height keeps geometry consistent
-    const ctx = slice.getContext("2d")!;
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, slice.width, slice.height);
-    ctx.drawImage(canvas, 0, y, canvas.width, sh, 0, 0, canvas.width, sh);
-
-    const img = slice.toDataURL("image/jpeg", 0.92);
-    pages.push(img);
-    if (pageIndex > 0) pdf.addPage("a4", orientation);
-    pdf.addImage(img, "JPEG", margin, margin, maxW, maxH, undefined, "FAST");
-
-    pageIndex++;
-    y = cut;
   }
 
   const blob = pdf.output("blob");

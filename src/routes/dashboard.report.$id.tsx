@@ -245,13 +245,17 @@ function Report() {
                   <MeterRow label={poles.T >= poles.F ? "Thinking" : "Feeling"} value={Math.max(poles.T, poles.F)} />
                   <MeterRow label={poles.J >= poles.P ? "Judging" : "Perceiving"} value={Math.max(poles.J, poles.P)} tone="accent" />
                 </div>
-                <div className="mt-5 border-t border-border pt-4">
-                  <h3 className="mb-3 text-sm font-bold text-primary">Preference Dumbbell</h3>
-                  <DumbbellChart poles={poles} />
-                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/60">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-primary">Performance Dumbbell</h3>
+                <div className="mt-4"><DumbbellChart poles={poles} /></div>
               </CardContent>
             </Card>
           </section>
+
 
 
           {/* Visual Page 2 — Personality snapshot + work-style distribution */}

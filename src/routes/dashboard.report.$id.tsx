@@ -12,10 +12,10 @@ import { WhatsAppModules } from "@/components/site/WhatsAppModules";
 import { RadarScore } from "@/components/charts/RadarScore";
 import {
   toPoles, behaviourMetrics, clamp,
-  TemperamentDonut, MeterRow, DimensionRing, PreferenceBars, SectionBarChart,
+  TemperamentDonut, MeterRow, DimensionRing, SectionBarChart,
   DimensionSplitChart, ProfileAreaChart,
 } from "@/components/report/PersonalityVisuals";
-import { BulletGraph, ContributionWaterfall, DotPlot, DumbbellChart, PoleHeatmap, ScoreColumnChart } from "@/components/report/AssessmentChartGallery";
+import { BulletGraph, DotPlot, DumbbellChart, PoleHeatmap, ScoreColumnChart } from "@/components/report/AssessmentChartGallery";
 import { exportPagesToPdf, type PdfPreviewResult } from "@/lib/pdf-export";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -245,13 +245,17 @@ function Report() {
                   <MeterRow label={poles.T >= poles.F ? "Thinking" : "Feeling"} value={Math.max(poles.T, poles.F)} />
                   <MeterRow label={poles.J >= poles.P ? "Judging" : "Perceiving"} value={Math.max(poles.J, poles.P)} tone="accent" />
                 </div>
-                <div className="mt-5 border-t border-border pt-4">
-                  <h3 className="mb-3 text-sm font-bold text-primary">Preference Dumbbell</h3>
-                  <DumbbellChart poles={poles} />
-                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/60">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-primary">Performance Dumbbell</h3>
+                <div className="mt-4"><DumbbellChart poles={poles} /></div>
               </CardContent>
             </Card>
           </section>
+
 
 
           {/* Visual Page 2 — Personality snapshot + work-style distribution */}

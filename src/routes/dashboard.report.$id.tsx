@@ -12,10 +12,10 @@ import { WhatsAppModules } from "@/components/site/WhatsAppModules";
 import { RadarScore } from "@/components/charts/RadarScore";
 import {
   toPoles, behaviourMetrics, clamp,
-  TemperamentDonut, MeterRow, DimensionRing, PreferenceBars, SectionBarChart,
+  TemperamentDonut, MeterRow, DimensionRing, SectionBarChart,
   DimensionSplitChart, ProfileAreaChart,
 } from "@/components/report/PersonalityVisuals";
-import { BulletGraph, ContributionWaterfall, DotPlot, DumbbellChart, PoleHeatmap, ScoreColumnChart } from "@/components/report/AssessmentChartGallery";
+import { BulletGraph, DotPlot, DumbbellChart, PoleHeatmap, ScoreColumnChart } from "@/components/report/AssessmentChartGallery";
 import { exportPagesToPdf, type PdfPreviewResult } from "@/lib/pdf-export";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 

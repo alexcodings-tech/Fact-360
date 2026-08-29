@@ -21,7 +21,7 @@ export function RadarScore({
 }) {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <RadarChart data={data} outerRadius="62%" margin={{ top: 18, right: 36, bottom: 18, left: 36 }}>
+      <RadarChart data={data} outerRadius="62%" cx="50%" cy="50%" margin={{ top: 18, right: 36, bottom: 18, left: 36 }}>
         <PolarGrid stroke="var(--color-border)" />
         <PolarAngleAxis
           dataKey="area"
@@ -36,6 +36,7 @@ export function RadarScore({
           fill={color}
           fillOpacity={0.35}
           strokeWidth={2}
+          isAnimationActive={false}
         />
         <Tooltip
           contentStyle={{

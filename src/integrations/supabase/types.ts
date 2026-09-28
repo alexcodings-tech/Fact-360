@@ -67,6 +67,7 @@ export type Database = {
           progress: number
           status: string
           submitted_at: string | null
+          target_role: string | null
           updated_at: string
           user_id: string
         }
@@ -77,6 +78,7 @@ export type Database = {
           progress?: number
           status?: string
           submitted_at?: string | null
+          target_role?: string | null
           updated_at?: string
           user_id: string
         }
@@ -87,6 +89,7 @@ export type Database = {
           progress?: number
           status?: string
           submitted_at?: string | null
+          target_role?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -498,6 +501,8 @@ export type Database = {
           id: string
           overall_score: number
           root_causes: Json | null
+          role_analysis: Json | null
+          target_role: string | null
           section_scores: Json
           status: string
           strengths: Json | null
@@ -519,6 +524,8 @@ export type Database = {
           id?: string
           overall_score: number
           root_causes?: Json | null
+          role_analysis?: Json | null
+          target_role?: string | null
           section_scores?: Json
           status?: string
           strengths?: Json | null
@@ -540,6 +547,8 @@ export type Database = {
           id?: string
           overall_score?: number
           root_causes?: Json | null
+          role_analysis?: Json | null
+          target_role?: string | null
           section_scores?: Json
           status?: string
           strengths?: Json | null

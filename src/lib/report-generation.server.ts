@@ -293,6 +293,24 @@ Also mention the "${targetRole}" comparison briefly inside executive_summary.` :
         : `Focus the next quarter on lifting ${bottomSections.map((s) => s.name).join(" and ") || "your lowest section"} while continuing to leverage ${topSections.map((s) => s.name).join(" and ") || "your top strengths"}.`,
     };
 
+    // Role-fit analysis (target role vs. the role the results naturally point to).
+    // Stored inside dimension_scores so no schema change is needed.
+    let roleAnalysis: any = null;
+    if (targetRole) {
+      const rf = aiOutput.role_fit ?? {};
+      const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : "");
+      roleAnalysis = {
+        target_role: targetRole,
+        introduction: str(rf.introduction) || `This report looks at your natural working profile and compares it with what the ${targetRole} role typically demands.`,
+        result_role: str(rf.result_role) || (topSections[0] ? `${topSections[0].name}-led professional` : "—"),
+        fit_score: typeof rf.fit_score === "number" ? Math.max(0, Math.min(100, Math.round(rf.fit_score))) : overall,
+        comparison_summary: str(rf.comparison_summary) || `Your results are strongest in ${topSections.map((s) => s.name).join(" and ") || "your top areas"}, which support the ${targetRole} role. To fully match it, lift ${bottomSections.map((s) => s.name).join(" and ") || "your lowest areas"}.`,
+        alignments: toShortPoints(asNonEmptyStrings(rf.alignments, topSections.map((s) => `${s.name} strength (${s.score}%)`)), 4),
+        gaps: toShortPoints(asNonEmptyStrings(rf.gaps, bottomSections.map((s) => `${s.name} needs development (${s.score}%)`)), 4),
+        improvements: asNonEmptyStrings(rf.improvements, bottomSections.map((s) => `Set one measurable 30-day goal to strengthen ${s.name} for the ${targetRole} role.`)).slice(0, 5),
+      };
+    }
+    delete aiOutput.role_fit;
 
     // Only the organisational assessment goes through admin review; every other
     // module releases its report to the client immediately on completion.
@@ -308,7 +326,7 @@ Also mention the "${targetRole}" comparison briefly inside executive_summary.` :
         overall_score: overall,
         section_scores: sectionScores,
         type_code: typeCode,
-        dimension_scores: dimensionScores,
+        dimension_scores: roleAnalysis ? { ...(dimensionScores ?? {}), role_analysis: roleAnalysis } : dimensionScores,
         executive_summary: aiOutput.executive_summary,
         strengths: aiOutput.strengths,
         gaps: aiOutput.gaps,

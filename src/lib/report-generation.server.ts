@@ -48,7 +48,8 @@ function asActionPlan(value: unknown, fallback: { priority: "P1" | "P2" | "P3"; 
 }
 
 /** Shared report generation used by both the client submit flow and the auto-ensure flow. */
-export async function generateReportForAttempt(supabase: any, userId: string, attemptId: string) {
+export async function generateReportForAttempt(supabase: any, userId: string, attemptId: string, targetRoleInput?: string) {
+    const targetRole = (targetRoleInput ?? "").trim();
     
 
     const { data: attempt, error: attErr } = await supabase

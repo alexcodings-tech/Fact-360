@@ -144,10 +144,12 @@ export const markAttemptSubmitted = createServerFn({ method: "POST" })
 /** Authed: submit + generate the AI report for one attempt. */
 export const submitAndGenerateReport = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) => z.object({ attemptId: z.string().uuid() }).parse(d))
+  .inputValidator((d: unknown) =>
+    z.object({ attemptId: z.string().uuid(), targetRole: z.string().trim().max(120).optional() }).parse(d),
+  )
   .handler(async ({ data, context }) => {
     const { generateReportForAttempt } = await import("./report-generation.server");
-    return generateReportForAttempt(context.supabase, context.userId, data.attemptId);
+    return generateReportForAttempt(context.supabase, context.userId, data.attemptId, data.targetRole);
   });
 
 /**

@@ -224,7 +224,18 @@ REQUIREMENTS (all fields are mandatory, none may be empty):
 - gaps: EXACTLY 5 items. Each item is one short phrase of AT MOST 10 words, tied to the lowest-scoring answers.
 - action_plan: 4-6 prioritised actions (mix of P1/P2/P3) with clear outcome and timeframe, focused on lifting the weakest areas.
 - root_causes: 2-4 symptom→cause pairs explaining the biggest gaps.
-- executive_summary and growth_opportunity: 2-4 sentences each, referencing the overall score, the ${designation} role, and the strongest/weakest sections. Do NOT mention MBTI, personality codes, or four-letter type codes anywhere.`;
+- executive_summary and growth_opportunity: 2-4 sentences each, referencing the overall score, the ${designation} role, and the strongest/weakest sections. Do NOT mention MBTI, personality codes, or four-letter type codes anywhere.
+${targetRole ? `
+ROLE-FIT ANALYSIS — the respondent wants to move into / be assessed for the role: "${targetRole}".
+Work out what behavioural profile this role typically needs, then compare it with the profile the answers actually reveal (the "result role").
+- role_fit.introduction: 2-3 sentences introducing the respondent's natural profile and what the "${targetRole}" role demands.
+- role_fit.result_role: a short title (max 5 words) for the role the results naturally fit best.
+- role_fit.fit_score: 0-100 estimate of how closely the result matches the "${targetRole}" role.
+- role_fit.comparison_summary: 3-5 sentences comparing the result role with "${targetRole}" — where they align and where they differ, grounded in the section scores and answers.
+- role_fit.alignments: 3-4 short phrases (max 10 words) where the respondent already fits the role.
+- role_fit.gaps: 3-4 short phrases (max 10 words) where the respondent differs from the role's needs.
+- role_fit.improvements: 3-5 concrete actions (one sentence each) to close the gap to "${targetRole}".
+Also mention the "${targetRole}" comparison briefly inside executive_summary.` : `- role_fit: return empty strings, 0 and empty arrays (no target role was selected).`}`;
 
         const schema = z.object({
           executive_summary: z.string(),
@@ -238,6 +249,15 @@ REQUIREMENTS (all fields are mandatory, none may be empty):
           })),
           root_causes: z.array(z.object({ symptom: z.string(), cause: z.string() })),
           growth_opportunity: z.string(),
+          role_fit: z.object({
+            introduction: z.string(),
+            result_role: z.string(),
+            fit_score: z.number(),
+            comparison_summary: z.string(),
+            alignments: z.array(z.string()),
+            gaps: z.array(z.string()),
+            improvements: z.array(z.string()),
+          }),
         });
 
         const { streamText, Output, NoObjectGeneratedError } = await import("ai");

@@ -11,6 +11,15 @@ function publicClient() {
   });
 }
 
+const LIFE_NAME = "L.I.F.E.™ (Lens for Individual Focus & Effectiveness)";
+const LIFE_TAGLINE = "Module 1 — Lens for Individual Focus & Effectiveness";
+/** Module 1 display name override (the stored name may still be the old one). */
+function brand<T>(a: T): T {
+  const x: any = a;
+  if (x && x.slug === "your-assessment-80") return { ...x, name: LIFE_NAME, ...(x.tagline !== undefined ? { tagline: LIFE_TAGLINE } : {}) };
+  return a;
+}
+
 /** Public: list active assessments */
 export const listAssessments = createServerFn({ method: "GET" }).handler(async () => {
   const sb = publicClient();
@@ -20,7 +29,7 @@ export const listAssessments = createServerFn({ method: "GET" }).handler(async (
     .eq("is_active", true)
     .order("created_at");
   if (error) throw new Error(error.message);
-  return data ?? [];
+  return (data ?? []).map(brand);
 });
 
 /** Public: get one assessment by slug */
@@ -38,7 +47,7 @@ export const getAssessmentBySlug = createServerFn({ method: "GET" })
     const sections = (a.sections ?? [])
       .sort((x: any, y: any) => x.order_index - y.order_index)
       .map((s: any) => ({ ...s, questions: (s.questions ?? []).sort((x: any, y: any) => x.order_index - y.order_index) }));
-    return { ...a, sections };
+    return brand({ ...a, sections });
   });
 
 /** Authed: start or resume an attempt */
@@ -96,7 +105,7 @@ export const getAttempt = createServerFn({ method: "GET" })
     return {
       id: attempt.id,
       status: attempt.status,
-      assessment: { id: a.id, slug: a.slug, name: a.name, tagline: a.tagline, sections },
+      assessment: brand({ id: a.id, slug: a.slug, name: a.name, tagline: a.tagline, sections }),
       responses: responses ?? [],
     };
   });
@@ -144,10 +153,12 @@ export const markAttemptSubmitted = createServerFn({ method: "POST" })
 /** Authed: submit + generate the AI report for one attempt. */
 export const submitAndGenerateReport = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) => z.object({ attemptId: z.string().uuid() }).parse(d))
+  .inputValidator((d: unknown) =>
+    z.object({ attemptId: z.string().uuid(), targetRole: z.string().trim().max(120).optional() }).parse(d),
+  )
   .handler(async ({ data, context }) => {
     const { generateReportForAttempt } = await import("./report-generation.server");
-    return generateReportForAttempt(context.supabase, context.userId, data.attemptId);
+    return generateReportForAttempt(context.supabase, context.userId, data.attemptId, data.targetRole);
   });
 
 /**
@@ -192,7 +203,7 @@ export const listMyAttempts = createServerFn({ method: "GET" })
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
-    return data ?? [];
+    return (data ?? []).map((row: any) => ({ ...row, assessment: brand(row.assessment) }));
   });
 
 export const getReport = createServerFn({ method: "GET" })
@@ -207,7 +218,7 @@ export const getReport = createServerFn({ method: "GET" })
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!report) throw new Error("Report not found");
-    return report;
+    return { ...report, assessment: brand((report as any).assessment) } as typeof report;
   });
 
 /** Authed: latest report's action plan (used by the Action Plan page). */

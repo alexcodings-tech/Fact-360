@@ -5,6 +5,8 @@ import { getAttempt, saveResponse, submitAndGenerateReport, markAttemptSubmitted
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useMemo, useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, Loader2, Sparkles } from "lucide-react";
 import * as LucideIcons from "lucide-react";
@@ -19,6 +21,13 @@ export const Route = createFileRoute("/dashboard/take/$id")({
 type Opt = { label: string; score: number };
 
 const PAGE_SIZE = 15;
+
+const ROLE_OPTIONS = [
+  "Team Leader", "Manager", "Senior Manager", "General Manager", "Director", "CEO / Founder",
+  "Sales Manager", "Marketing Manager", "HR Manager", "Finance Manager", "Operations Manager",
+  "Project Manager", "Product Manager", "Business Analyst", "Software Engineer", "Customer Success Manager",
+  "Entrepreneur", "Consultant", "Trainer / Coach",
+];
 
 // Gamified Likert scale: extremes (1 & 5) are the largest circles, 2 & 4 are
 // smaller, 3 (neutral) is the smallest. No emojis — colour + size carry meaning.
@@ -137,13 +146,20 @@ function Take() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [all]);
 
+  const roleKey = `fact360:target-role:${attemptId}`;
+  const [targetRole, setTargetRole] = useState<string | null>(null);
+  const [roleDraft, setRoleDraft] = useState("");
+  useEffect(() => {
+    setTargetRole(window.localStorage.getItem(roleKey) ?? "");
+  }, [roleKey]);
+
   const saveMut = useMutation({ mutationFn: (v: any) => save({ data: v }) });
   const submitMut = useMutation({
     mutationFn: async () => {
       // Mark submitted first (fast) so the client is never stuck on a spinner,
       // then kick off AI report generation in the background for the admin review queue.
       await markSubmitted({ data: { attemptId } });
-      void submit({ data: { attemptId } }).catch(() => {});
+      void submit({ data: { attemptId, targetRole: targetRole || undefined } }).catch(() => {});
       return { ok: true };
     },
     onSuccess: () => navigate({ to: "/dashboard/thank-you" }),
@@ -151,7 +167,7 @@ function Take() {
   });
 
 
-  if (isLoading) return <div className="p-8 text-center"><Loader2 className="h-6 w-6 animate-spin inline" /></div>;
+  if (isLoading || targetRole === null) return <div className="p-8 text-center"><Loader2 className="h-6 w-6 animate-spin inline" /></div>;
   if (error || !data) return <div className="p-8 text-center text-destructive">Could not load assessment.</div>;
   if (data.status === "submitted") {
     return (
@@ -162,6 +178,54 @@ function Take() {
     );
   }
   if (all.length === 0) return <div className="p-8 text-center">No questions configured.</div>;
+
+  if (!targetRole) {
+    const confirmRole = () => {
+      const v = roleDraft.trim();
+      if (v.length < 2) { toast.error("Please type or pick the role you are aiming for."); return; }
+      window.localStorage.setItem(roleKey, v.slice(0, 120));
+      setTargetRole(v.slice(0, 120));
+    };
+    return (
+      <div className="max-w-xl mx-auto py-8">
+        <Card className="border-border/60">
+          <CardContent className="p-6 space-y-4">
+            <h1 className="text-xl font-bold text-primary">{data.assessment.name}</h1>
+            <p className="text-sm text-muted-foreground">
+              Which role are you aiming for? Your report will compare your results with this role and show how to close the gap.
+            </p>
+            <div className="space-y-2">
+              <Label htmlFor="target-role">Target role</Label>
+              <Input
+                id="target-role"
+                list="target-role-options"
+                value={roleDraft}
+                onChange={(e) => setRoleDraft(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") confirmRole(); }}
+                placeholder="Type a role or pick from the list"
+                maxLength={120}
+                autoFocus
+              />
+              <datalist id="target-role-options">
+                {ROLE_OPTIONS.map((r) => <option key={r} value={r} />)}
+              </datalist>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {ROLE_OPTIONS.slice(0, 8).map((r) => (
+                <button key={r} type="button" onClick={() => setRoleDraft(r)}
+                  className={`text-xs rounded-full border px-3 py-1 transition-colors ${roleDraft === r ? "bg-primary text-primary-foreground border-primary" : "border-border hover:bg-secondary"}`}>
+                  {r}
+                </button>
+              ))}
+            </div>
+            <Button onClick={confirmRole} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+              Start assessment <ArrowRight className="h-4 w-4 ml-1" />
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const total = all.length;
   const totalPages = Math.ceil(total / PAGE_SIZE);

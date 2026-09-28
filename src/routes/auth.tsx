@@ -54,6 +54,10 @@ function Auth() {
         options: { data: { full_name: String(f.get("full_name")), company: String(f.get("company") ?? "") } },
       });
       if (error) throw error;
+      if (!data.session) {
+        toast.success("Account created! Check your email and click the confirmation link, then log in.", { duration: 8000 });
+        return;
+      }
       if (data.user) {
         await supabase.from("profiles").update({
           title: String(f.get("title") ?? ""),

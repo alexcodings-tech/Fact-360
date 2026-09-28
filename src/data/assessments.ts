@@ -32,8 +32,8 @@ export type Assessment = {
 export const ASSESSMENTS: Assessment[] = [
   {
     id: "your-assessment-80",
-    name: "Personality Analysis (Know Yourself)",
-    tagline: "Module 1 — Understand your personality in depth",
+    name: "L.I.F.E.™ (Lens for Individual Focus & Effectiveness)",
+    tagline: "Module 1 — Lens for Individual Focus & Effectiveness",
     description:
       "An 80-question personal assessment covering behavior, motivation and work style. Get a detailed personality report you can share with your manager or coach.",
     category: "Personality",

@@ -6,7 +6,7 @@ export const FACT360_WHATSAPP = "917603838929";
 const MODULE_PITCH = `Hi FACT 360° team, I'd like details about your other assessment modules.
 
 Please send me the description and benefits of:
-• M1 – Personality Analysis (Know Yourself) – ₹999
+• M1 – L.I.F.E.™ (Lens for Individual Focus & Effectiveness) – ₹999
 • M2 – DISC Profiling – ₹999
 • M3 – Leadership Assessment (Know Your Managers) – ₹999
 • M4 – Team & Culture Assessment – ₹999

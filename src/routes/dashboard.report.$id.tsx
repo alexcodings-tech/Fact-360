@@ -432,12 +432,59 @@ function Report() {
 
       {/* Page 2 — Summary, strengths & weaknesses */}
       <section className="print-page space-y-4">
+        {dim?.role_analysis?.introduction && (
+          <Card className="border-border/60">
+            <CardContent className="p-6">
+              <h2 className="font-bold text-primary">Introduction</h2>
+              <p className="mt-2 text-sm text-foreground/80 leading-relaxed">{dim.role_analysis.introduction}</p>
+            </CardContent>
+          </Card>
+        )}
         <Card className="border-indigo-200 bg-indigo-50/70">
           <CardContent className="p-6">
             <div className="flex items-center gap-2 text-indigo-700"><Sparkles className="h-5 w-5" /><h2 className="font-bold">Executive Summary</h2></div>
             <p className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-line">{r.executive_summary}</p>
           </CardContent>
         </Card>
+        {dim?.role_analysis && (() => {
+          const ra = dim.role_analysis;
+          return (
+            <Card className="border-accent/40 bg-accent/5 print-block">
+              <CardContent className="p-6 space-y-4">
+                <h2 className="font-bold text-primary">Role Comparison</h2>
+                <div className="grid sm:grid-cols-3 gap-3 text-center">
+                  <div className="rounded-lg border border-border bg-background p-3">
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Your result fits</div>
+                    <div className="font-semibold text-primary mt-1">{ra.result_role}</div>
+                  </div>
+                  <div className="rounded-lg border border-border bg-background p-3">
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Role fit</div>
+                    <div className="text-2xl font-extrabold text-primary">{ra.fit_score}%</div>
+                  </div>
+                  <div className="rounded-lg border border-border bg-background p-3">
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Expected role</div>
+                    <div className="font-semibold text-primary mt-1">{ra.target_role}</div>
+                  </div>
+                </div>
+                <p className="text-sm text-foreground/80 leading-relaxed">{ra.comparison_summary}</p>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <div className="font-semibold text-primary mb-1">Where you already fit</div>
+                    <ul className="list-disc pl-5 space-y-1">{(ra.alignments ?? []).map((x: string) => <li key={x}>{x}</li>)}</ul>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-primary mb-1">Where you differ</div>
+                    <ul className="list-disc pl-5 space-y-1">{(ra.gaps ?? []).map((x: string) => <li key={x}>{x}</li>)}</ul>
+                  </div>
+                </div>
+                <div className="text-sm">
+                  <div className="font-semibold text-primary mb-1">How to improve for this role</div>
+                  <ol className="list-decimal pl-5 space-y-1">{(ra.improvements ?? []).map((x: string) => <li key={x}>{x}</li>)}</ol>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })()}
         <div className="grid md:grid-cols-2 gap-4">
         <Card className="border-emerald-200 bg-emerald-50/70">
           <CardContent className="p-6">

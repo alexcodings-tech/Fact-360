@@ -22,7 +22,7 @@ const DEFAULT_MESSAGE = `Hello {name}, this is FACT 360°.
 
 Here are our assessment modules — description and benefits:
 
-• M1 – Personality Analysis (Know Yourself) – ₹999
+• M1 – L.I.F.E.™ (Lens for Individual Focus & Effectiveness) – ₹999
   Understand your natural style, strengths and blind spots.
 • M2 – DISC Profiling – ₹999
   Know how you communicate, decide and handle pressure.

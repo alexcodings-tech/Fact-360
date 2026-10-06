@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SampleReportsRouteImport } from './routes/sample-reports'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as LifeRouteImport } from './routes/life'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -52,6 +53,11 @@ const SampleReportsRoute = SampleReportsRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LifeRoute = LifeRouteImport.update({
+  id: '/life',
+  path: '/life',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqsRoute = FaqsRouteImport.update({
@@ -224,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/faqs': typeof FaqsRoute
+  '/life': typeof LifeRoute
   '/pricing': typeof PricingRoute
   '/sample-reports': typeof SampleReportsRoute
   '/admin/assessments': typeof AdminAssessmentsRoute
@@ -258,6 +265,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/faqs': typeof FaqsRoute
+  '/life': typeof LifeRoute
   '/pricing': typeof PricingRoute
   '/sample-reports': typeof SampleReportsRoute
   '/admin/assessments': typeof AdminAssessmentsRoute
@@ -295,6 +303,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/faqs': typeof FaqsRoute
+  '/life': typeof LifeRoute
   '/pricing': typeof PricingRoute
   '/sample-reports': typeof SampleReportsRoute
   '/admin/assessments': typeof AdminAssessmentsRoute
@@ -333,6 +342,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faqs'
+    | '/life'
     | '/pricing'
     | '/sample-reports'
     | '/admin/assessments'
@@ -367,6 +377,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/faqs'
+    | '/life'
     | '/pricing'
     | '/sample-reports'
     | '/admin/assessments'
@@ -403,6 +414,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faqs'
+    | '/life'
     | '/pricing'
     | '/sample-reports'
     | '/admin/assessments'
@@ -440,6 +452,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   FaqsRoute: typeof FaqsRoute
+  LifeRoute: typeof LifeRoute
   PricingRoute: typeof PricingRoute
   SampleReportsRoute: typeof SampleReportsRoute
   ApiQuestionIconsRoute: typeof ApiQuestionIconsRoute
@@ -462,6 +475,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/life': {
+      id: '/life'
+      path: '/life'
+      fullPath: '/life'
+      preLoaderRoute: typeof LifeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faqs': {
@@ -768,6 +788,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRouteWithChildren,
   FaqsRoute: FaqsRoute,
+  LifeRoute: LifeRoute,
   PricingRoute: PricingRoute,
   SampleReportsRoute: SampleReportsRoute,
   ApiQuestionIconsRoute: ApiQuestionIconsRoute,

@@ -44,6 +44,7 @@ import { Route as AdminReportAttemptIdRouteImport } from './routes/admin.report.
 import { Route as DashboardReportIdRouteImport } from './routes/dashboard.report.$id'
 import { Route as DashboardTakeIdRouteImport } from './routes/dashboard.take.$id'
 import { Route as ReportLandscapeIdRouteImport } from './routes/report.landscape.$id'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -220,6 +221,12 @@ const ReportLandscapeIdRoute = ReportLandscapeIdRouteImport.update({
   path: '/report/landscape/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -257,6 +264,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/take/$id': typeof DashboardTakeIdRoute
   '/report/landscape/$id': typeof ReportLandscapeIdRoute
   '/admin/organisations/': typeof AdminOrganisationsIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -292,6 +300,7 @@ export interface FileRoutesByTo {
   '/dashboard/take/$id': typeof DashboardTakeIdRoute
   '/report/landscape/$id': typeof ReportLandscapeIdRoute
   '/admin/organisations': typeof AdminOrganisationsIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -330,6 +339,7 @@ export interface FileRoutesById {
   '/dashboard/take/$id': typeof DashboardTakeIdRoute
   '/report/landscape/$id': typeof ReportLandscapeIdRoute
   '/admin/organisations/': typeof AdminOrganisationsIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -369,6 +379,7 @@ export interface FileRouteTypes {
     | '/dashboard/take/$id'
     | '/report/landscape/$id'
     | '/admin/organisations/'
+    | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -404,6 +415,7 @@ export interface FileRouteTypes {
     | '/dashboard/take/$id'
     | '/report/landscape/$id'
     | '/admin/organisations'
+    | '/lovable/email/transactional/preview'
   id:
     | '__root__'
     | '/'
@@ -441,6 +453,7 @@ export interface FileRouteTypes {
     | '/dashboard/take/$id'
     | '/report/landscape/$id'
     | '/admin/organisations/'
+    | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -459,6 +472,7 @@ export interface RootRouteChildren {
   ReportIdRoute: typeof ReportIdRoute
   RespondTokenRoute: typeof RespondTokenRoute
   ReportLandscapeIdRoute: typeof ReportLandscapeIdRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -708,6 +722,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportLandscapeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -795,6 +816,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReportIdRoute: ReportIdRoute,
   RespondTokenRoute: RespondTokenRoute,
   ReportLandscapeIdRoute: ReportLandscapeIdRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

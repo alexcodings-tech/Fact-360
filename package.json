@@ -78,11 +78,7 @@
     "typed.js": "^3.0.0",
     "vaul": "^1.1.2",
     "vite-tsconfig-paths": "^6.0.2",
-    "zod": "^4.4.3",
-    "@lovable.dev/email-js": "0.3.1",
-    "@lovable.dev/webhooks-js": "0.0.3",
-    "@react-email/components": "^1.0.12",
-    "@react-email/render": "^2.0.10"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
@@ -106,10 +102,5 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^8.0.16"
-  },
-  "pnpm": {
-    "overrides": {
-      "entities": "4.5.0"
-    }
   }
 }

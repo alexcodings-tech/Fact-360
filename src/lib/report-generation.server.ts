@@ -343,8 +343,8 @@ Also mention the "${targetRole}" comparison briefly inside executive_summary.` :
 
     if (!needsAdminReview) {
       try {
-        const { data: prof } = await supabase.from("profiles").select("full_name, email").eq("id", userId).maybeSingle();
-        let email: string | undefined = prof?.email;
+        const { data: prof } = await supabase.from("profiles").select("full_name").eq("id", userId).maybeSingle();
+        let email: string | undefined;
         if (!email) {
           const { data: u } = await supabase.auth.getUser();
           email = u?.user?.email;

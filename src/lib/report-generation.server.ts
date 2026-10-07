@@ -341,5 +341,32 @@ Also mention the "${targetRole}" comparison briefly inside executive_summary.` :
 
     await supabase.from("attempts").update({ status: "submitted", progress: 100, submitted_at: new Date().toISOString() }).eq("id", attemptId);
 
+    if (!needsAdminReview) {
+      try {
+        const { data: prof } = await supabase.from("profiles").select("full_name").eq("id", userId).maybeSingle();
+        let email: string | undefined;
+        if (!email) {
+          const { data: u } = await supabase.auth.getUser();
+          email = u?.user?.email;
+        }
+        if (email) {
+          const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+          const summary = typeof aiOutput.executive_summary === "string" ? aiOutput.executive_summary.slice(0, 600) : undefined;
+          await sendTemplateEmail("report-ready", email, {
+            templateData: {
+              name: prof?.full_name ?? undefined,
+              assessmentName: a?.slug === "your-assessment-80" ? "L.I.F.E.™ Assessment" : (a?.title ?? "assessment"),
+              overallScore: overall,
+              summary,
+              reportUrl: `https://fact360.brandchef.in/dashboard/report/${report.id}`,
+            },
+            idempotencyKey: `report-ready-${report.id}`,
+          });
+        }
+      } catch (e) {
+        console.error("Report email failed", e);
+      }
+    }
+
     return { reportId: report.id, attemptId: attemptId };
 }

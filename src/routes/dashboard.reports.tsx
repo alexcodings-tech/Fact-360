@@ -30,6 +30,7 @@ function Reports() {
           {reports.map((r) => {
             const rep = Array.isArray(r.report) ? r.report[0] : r.report;
             const pending = !rep;
+            const isLife = r.assessment?.slug === "your-assessment-80";
             const date = r.submitted_at ? new Date(r.submitted_at).toLocaleDateString() : "—";
             return (
               <Card key={r.id} className="border-border/60">
@@ -41,12 +42,14 @@ function Reports() {
                   <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
                     <span>Completed {date}</span>
                     {pending
-                      ? <Badge variant="secondary">Awaiting review</Badge>
+                      ? <Badge variant="secondary">{isLife ? "Preparing" : "Awaiting review"}</Badge>
                       : <Badge className="bg-success text-success-foreground">{rep?.overall_score ?? 0}%</Badge>}
                   </div>
                   {pending && (
                     <p className="text-xs text-muted-foreground mt-2">
-                      Thank you for completing the assessment — you will receive your report within 24 hours.
+                      {isLife
+                        ? "Your report is being prepared and will appear here in about a minute."
+                        : "Thank you for completing the assessment — you will receive your report within 24 hours."}
                     </p>
                   )}
                   <div className={`flex gap-2 mt-3 ${pending ? "hidden" : ""}`}>

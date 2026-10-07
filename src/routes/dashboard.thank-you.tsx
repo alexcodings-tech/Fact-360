@@ -23,8 +23,8 @@ function ThankYou() {
     if (started.current) return;
     started.current = true;
     let stopped = false;
-    void ensure().catch(() => {});
     const startedAt = Date.now();
+    let timer: ReturnType<typeof setTimeout> | undefined;
 
     // Check every few seconds whether the report is ready, then open it automatically.
     async function check() {
@@ -35,14 +35,17 @@ function ThankYou() {
         const rep = Array.isArray(latest?.report) ? latest?.report[0] : latest?.report;
         if (rep?.id) {
           stopped = true;
-          navigate({ to: "/dashboard/report/$id", params: { id: latest.id } });
+          // Full navigation guarantees the report page loads fresh data (no manual refresh needed).
+          window.location.assign(`/dashboard/report/${latest.id}`);
           return;
         }
       } catch { /* retry */ }
       if (Date.now() - startedAt > 180000) { setState("done"); return; }
-      setTimeout(check, 4000);
+      timer = setTimeout(check, 3000);
     }
-    setTimeout(check, 3000);
+    // Generate the report if needed, then check immediately once it finishes.
+    void ensure().catch(() => {}).finally(() => { if (!stopped) { clearTimeout(timer); void check(); } });
+    timer = setTimeout(check, 3000);
     return () => { stopped = true; };
   }, [ensure, attemptsFn, navigate]);
 

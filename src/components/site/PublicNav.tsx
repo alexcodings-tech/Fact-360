@@ -28,7 +28,7 @@ export function PublicNav() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-2">
-          <LanguageSwitcher />
+          {/* <LanguageSwitcher /> */}
           <Link to="/auth"><Button variant="ghost" size="sm">{t("nav.login")}</Button></Link>
           <Link to="/auth"><Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm">{t("nav.signup")}</Button></Link>
         </div>
@@ -39,7 +39,7 @@ export function PublicNav() {
               {links.map((l) => (
                 <Link key={l.to} to={l.to as any} className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted">{l.label}</Link>
               ))}
-              <div className="mt-3 px-3"><LanguageSwitcher /></div>
+              {/* <div className="mt-3 px-3"><LanguageSwitcher /></div> */}
               <Link to="/auth" className="mt-4"><Button className="w-full" variant="outline">{t("nav.login")}</Button></Link>
               <Link to="/auth"><Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">{t("nav.signup")}</Button></Link>
             </div>

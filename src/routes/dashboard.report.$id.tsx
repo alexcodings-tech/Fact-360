@@ -189,11 +189,13 @@ function Report() {
           <h1 className="text-2xl md:text-3xl font-bold text-primary mt-1">{a?.name}</h1>
         </div>
         <div className="flex gap-2">
+          {/* Landscape view button hidden on request
           <Button asChild variant="outline">
             <Link to={"/report/landscape/$id" as any} params={{ id: attemptId } as any}>
               <FileText className="h-4 w-4 mr-1" /> Landscape view
             </Link>
           </Button>
+          */}
           <Button className="bg-primary hover:bg-primary/90" onClick={handlePreview} disabled={exporting}>
             {exporting ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Eye className="h-4 w-4 mr-1" />}
             {exporting ? "Preparing preview..." : "Preview PDF"}

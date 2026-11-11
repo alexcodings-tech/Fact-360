@@ -189,13 +189,11 @@ function Report() {
           <h1 className="text-2xl md:text-3xl font-bold text-primary mt-1">{a?.name}</h1>
         </div>
         <div className="flex gap-2">
-          {/* Landscape view button hidden on request
           <Button asChild variant="outline">
-            <Link to={"/report/landscape/$id" as any} params={{ id: attemptId } as any}>
-              <FileText className="h-4 w-4 mr-1" /> Landscape view
+            <Link to="/report/landscape/$id" params={{ id: attemptId }}>
+              <FileText className="h-4 w-4 mr-1" /> Landscape PDF
             </Link>
           </Button>
-          */}
           <Button className="bg-primary hover:bg-primary/90" onClick={handlePreview} disabled={exporting}>
             {exporting ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Eye className="h-4 w-4 mr-1" />}
             {exporting ? "Preparing preview..." : "Preview PDF"}
@@ -621,7 +619,7 @@ function Report() {
       <WhatsAppModules />
 
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-        <DialogContent className="no-print flex h-[94vh] max-w-5xl grid-rows-[auto_1fr_auto] gap-0 overflow-hidden p-0">
+        <DialogContent className="no-print flex h-[94vh] max-w-5xl flex-col gap-0 overflow-hidden p-0">
           <DialogHeader className="border-b border-border px-6 py-4">
             <DialogTitle>A4 print preview</DialogTitle>
             <DialogDescription>{pdfPreview?.pages.length ?? 0} portrait pages · preview matches the downloaded PDF</DialogDescription>

@@ -23,7 +23,7 @@ export function ScoreColumnChart({ data, height = 230 }: { data: ScoreDatum[]; h
         <XAxis dataKey="name" interval={0} tickFormatter={shortLabel} tick={{ fontSize: 9 }} angle={-20} textAnchor="end" />
         <YAxis domain={[0, 100]} width={28} tick={{ fontSize: 9 }} />
         <Tooltip formatter={(value: number) => `${value}%`} contentStyle={{ fontSize: 12, borderRadius: 6 }} />
-        <Bar dataKey="value" radius={[5, 5, 0, 0]} isAnimationActive={false}>
+        <Bar dataKey="value" radius={[5, 5, 0, 0]} isAnimationActive={false} animationDuration={0}>
           {data.map((item, index) => <Cell key={item.name} fill={`var(--color-chart-${index % 6 + 1})`} />)}
           <LabelList dataKey="value" position="top" formatter={(value: number) => `${value}%`} style={{ fontSize: 9, fill: "var(--color-foreground)" }} />
         </Bar>

@@ -129,7 +129,7 @@ export function TemperamentDonut({ poles, height = 220 }: { poles: PoleSet; heig
   return (
     <ResponsiveContainer width="100%" height={height}>
       <PieChart>
-        <Pie data={data} dataKey="value" nameKey="name" innerRadius="45%" outerRadius="78%" paddingAngle={2}>
+        <Pie data={data} dataKey="value" nameKey="name" innerRadius="45%" outerRadius="78%" paddingAngle={2} isAnimationActive={false}>
           {data.map((_, i) => <Cell key={i} fill={DONUT_COLORS[i % DONUT_COLORS.length]} />)}
         </Pie>
         <Legend verticalAlign="middle" align="right" layout="vertical" iconType="circle"
@@ -187,10 +187,10 @@ export function DimensionSplitChart({ poles, height = 240 }: { poles: PoleSet; h
         <YAxis type="category" dataKey="name" width={150} tick={{ fontSize: 10 }} />
         <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
         {DIM_ROWS.flatMap((d, i) => [
-          <Bar key={d.left} dataKey={d.left} stackId={`s${i}`} fill="var(--color-primary)">
+          <Bar key={d.left} dataKey={d.left} stackId={`s${i}`} fill="var(--color-primary)" isAnimationActive={false}>
             <LabelList dataKey={d.left} position="insideLeft" formatter={(v: any) => (v > 12 ? `${v}%` : "")} style={{ fontSize: 10, fill: "#fff" }} />
           </Bar>,
-          <Bar key={d.right} dataKey={d.right} stackId={`s${i}`} fill="var(--color-accent)">
+          <Bar key={d.right} dataKey={d.right} stackId={`s${i}`} fill="var(--color-accent)" isAnimationActive={false}>
             <LabelList dataKey={d.right} position="insideRight" formatter={(v: any) => (v > 12 ? `${v}%` : "")} style={{ fontSize: 10, fill: "#fff" }} />
           </Bar>,
         ])}
@@ -207,7 +207,7 @@ export function CapabilityRadial({ data, height = 260 }: { data: { name: string;
     <ResponsiveContainer width="100%" height={height}>
       <RadialBarChart data={rows} innerRadius="28%" outerRadius="100%" startAngle={90} endAngle={-270}>
         <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-        <RadialBar dataKey="value" background cornerRadius={6} />
+        <RadialBar dataKey="value" background cornerRadius={6} isAnimationActive={false} />
         <Legend iconType="circle" layout="vertical" align="right" verticalAlign="middle"
           wrapperStyle={{ fontSize: 11 }}
           payload={rows.map((r) => ({ value: `${r.name} (${r.value}%)`, type: "circle", color: r.fill as string, id: r.name }))} />
@@ -232,7 +232,7 @@ export function ProfileAreaChart({ data, height = 220 }: { data: { name: string;
         <XAxis dataKey="name" tick={{ fontSize: 9 }} interval={0} angle={-18} textAnchor="end" height={54} />
         <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} width={30} />
         <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-        <Area type="monotone" dataKey="value" stroke="var(--color-primary)" strokeWidth={2} fill="url(#profileFill)" />
+        <Area type="monotone" dataKey="value" stroke="var(--color-primary)" strokeWidth={2} fill="url(#profileFill)" isAnimationActive={false} />
       </AreaChart>
     </ResponsiveContainer>
   );
@@ -253,7 +253,7 @@ export function SectionBarChart({
         <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10 }} />
         <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
         <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-        <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={16}>
+        <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={16} isAnimationActive={false}>
           {data.map((d, i) => (
             <Cell key={i} fill={i % 2 === 0 ? "var(--color-primary)" : "var(--color-accent)"} />
           ))}

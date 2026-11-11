@@ -18,12 +18,13 @@ export async function exportPagesToPdf(
   const pdf = new jsPDF({ orientation, unit: "mm", format: "a4" });
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
-  const margin = 8;
+  const margin = orientation === "landscape" ? 0 : 8;
   const maxW = pageW - margin * 2;
   const maxH = pageH - margin * 2;
 
-  // Render at a fixed A4-ish CSS width so proportions match the print preview.
-  const A4_CSS_WIDTH = 794; // 210mm @ 96dpi
+  // Render at the exact CSS width of the selected A4 orientation so the
+  // landscape infographic keeps its designed proportions and fills the sheet.
+  const A4_CSS_WIDTH = orientation === "landscape" ? 1123 : 794;
   const prevWidth = container.style.width;
   const prevMax = container.style.maxWidth;
   container.style.width = `${A4_CSS_WIDTH}px`;
@@ -39,10 +40,24 @@ export async function exportPagesToPdf(
   try {
     for (let i = 0; i < targets.length; i++) {
       const el = targets[i]!;
+      const computedBackground = window.getComputedStyle(el).backgroundColor;
+      const captureBackground = !computedBackground || computedBackground === "transparent" || computedBackground === "rgba(0, 0, 0, 0)"
+        ? "#ffffff"
+        : computedBackground;
+      const images = Array.from(el.querySelectorAll("img"));
+      await Promise.all(images.map(async (img) => {
+        if (!img.complete) {
+          await new Promise<void>((resolve) => {
+            img.addEventListener("load", () => resolve(), { once: true });
+            img.addEventListener("error", () => resolve(), { once: true });
+          });
+        }
+        if (img.complete && img.naturalWidth > 0) await img.decode().catch(() => undefined);
+      }));
       const canvas = await html2canvas(el, {
         scale: 2,
         useCORS: true,
-        backgroundColor: "#ffffff",
+        backgroundColor: captureBackground,
         logging: false,
         windowWidth: A4_CSS_WIDTH,
         ignoreElements: (node) => node.classList?.contains("no-print"),
@@ -54,7 +69,7 @@ export async function exportPagesToPdf(
       const drawW = canvas.width * ratio;
       const drawH = canvas.height * ratio;
       const offsetX = margin + (maxW - drawW) / 2;
-      const offsetY = margin;
+      const offsetY = margin + (maxH - drawH) / 2;
 
       // Compose onto a full A4 canvas so the preview images are true A4 sheets.
       const sheet = document.createElement("canvas");
@@ -62,7 +77,7 @@ export async function exportPagesToPdf(
       sheet.width = Math.round(pageW * sheetScale);
       sheet.height = Math.round(pageH * sheetScale);
       const ctx = sheet.getContext("2d")!;
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = captureBackground;
       ctx.fillRect(0, 0, sheet.width, sheet.height);
       ctx.drawImage(
         canvas,

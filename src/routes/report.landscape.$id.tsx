@@ -144,11 +144,14 @@ function Panel({
 
 function Highlight({ icon: Icon, value, label, note }: { icon: LucideIcon; value: string; label: string; note?: string }) {
   return (
-    <div className="flex min-h-0 flex-col items-center justify-center rounded border border-report-line bg-report-paper px-1 py-1 text-center">
-      <Icon className="mb-0.5 h-4 w-4 text-report-ink" />
-      <div className="max-w-full truncate text-[15px] font-extrabold leading-tight text-report-ink" title={value}>{value}</div>
-      <div className="max-w-full truncate text-[8px] font-semibold uppercase tracking-wide text-report-ink/65" title={label}>{label}</div>
-      {note && <div className="max-w-full truncate text-[8px] font-bold text-report-gold" title={note}>{note}</div>}
+    <div className="relative flex min-h-0 items-center gap-1.5 overflow-hidden rounded-sm border border-report-line bg-report-paper px-1.5 py-1 text-left">
+      <span className="absolute inset-x-0 top-0 h-0.5 bg-report-sun" />
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-report-cream text-report-gold"><Icon className="h-3.5 w-3.5" /></span>
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-[14px] font-extrabold leading-[15px] text-report-ink" title={value}>{value}</div>
+        <div className="truncate text-[6.5px] font-bold uppercase leading-[9px] tracking-wide text-report-ink/60" title={label}>{label}</div>
+        {note && <div className="truncate text-[6.5px] font-extrabold leading-[8px] text-report-gold" title={note}>{note}</div>}
+      </div>
     </div>
   );
 }
@@ -185,10 +188,9 @@ function PreferenceBalance({ poles }: { poles: PoleSet }) {
           <div className="mb-1 flex items-center justify-between text-[8px] font-bold text-report-ink">
             <span>{row.left} {row.l}%</span><span className="uppercase tracking-wider text-report-ink/50">{row.title}</span><span>{row.right} {row.r}%</span>
           </div>
-          <div className="relative flex h-4 overflow-hidden rounded-full bg-report-line">
+          <div className="flex h-4 overflow-hidden rounded-full bg-report-line">
             <div className="h-full bg-report-ink" style={{ width: `${row.l}%` }} />
             <div className="h-full flex-1 bg-report-sun" />
-            <span className="absolute left-1/2 top-0 h-full w-px bg-report-paper" />
           </div>
         </div>
       ))}
@@ -244,12 +246,15 @@ function WorkstyleDonut({ poles }: { poles: PoleSet }) {
 
 function CapabilityColumns({ data }: { data: { name: string; value: number }[] }) {
   return (
-    <div className="flex h-full items-stretch gap-2 pb-1 pt-3" role="img" aria-label="Behavioural capability column chart">
-      {data.slice(0, 7).map((item, index) => (
-        <div key={item.name} className="flex min-w-0 flex-1 flex-col items-center justify-end">
-          <span className="mb-1 text-[8px] font-extrabold text-report-ink">{item.value}%</span>
-          <div className="flex h-[112px] w-full max-w-10 items-end rounded-t-sm bg-report-line/55">
-            <div className={`w-full rounded-t-sm ${index % 2 ? "bg-report-sun" : "bg-report-ink"}`} style={{ height: `${clamp(item.value)}%` }} />
+    <div className="relative flex h-full items-stretch gap-2 pb-1 pt-3" role="img" aria-label="Behavioural capability column chart with score bands">
+      <div className="pointer-events-none absolute inset-x-0 bottom-6 top-7 flex flex-col justify-between text-[6px] font-bold text-report-ink/35">
+        {[100, 75, 50, 25, 0].map((tick) => <span key={tick} className="border-b border-dashed border-report-line">{tick}</span>)}
+      </div>
+      {data.slice(0, 7).map((item) => (
+        <div key={item.name} className="relative z-10 flex min-w-0 flex-1 flex-col items-center justify-end">
+          <span className="mb-1 rounded-full bg-report-paper px-1 text-[8px] font-extrabold text-report-ink">{item.value}%</span>
+          <div className="flex h-[112px] w-full max-w-10 items-end rounded-t-sm bg-report-paper/75">
+            <div className={`w-full rounded-t-sm ${item.value >= 70 ? "bg-report-sun" : item.value >= 50 ? "bg-report-gold" : "bg-report-ink"}`} style={{ height: `${clamp(item.value)}%` }} />
           </div>
           <span className="mt-1.5 h-5 w-full text-center text-[7px] font-semibold leading-tight text-report-ink/70" title={item.name}>{item.name}</span>
         </div>
@@ -309,20 +314,71 @@ function CapabilityDots({ data }: { data: { name: string; value: number }[] }) {
   );
 }
 
-function ActionTimeline({ items }: { items: { priority: string; title: string; timeframe: string }[] }) {
+function RoleAlignment({
+  analysis,
+  overall,
+  roleFit,
+  strongest,
+  focus,
+}: {
+  analysis?: { target_role?: string; result_role?: string; alignments?: string[]; gaps?: string[] };
+  overall: number;
+  roleFit: number;
+  strongest: { name: string; value: number };
+  focus: { name: string; value: number };
+}) {
   return (
-    <div className="relative flex h-full flex-col justify-around pl-1">
-      <span className="absolute bottom-5 left-[17px] top-5 w-0.5 bg-report-line" />
+    <div className="flex h-full flex-col justify-between gap-1.5" role="img" aria-label="Comparison of assessment results with the selected role">
+      <div className="grid grid-cols-2 gap-1.5">
+        <div className="min-w-0 rounded-sm bg-report-ink px-2 py-1 text-report-paper">
+          <div className="text-[6px] font-bold uppercase tracking-widest text-report-sun">Selected role</div>
+          <div className="truncate text-[9px] font-extrabold" title={analysis?.target_role ?? "Current capability"}>{analysis?.target_role ?? "Current capability"}</div>
+        </div>
+        <div className="min-w-0 rounded-sm bg-report-sun px-2 py-1 text-report-ink">
+          <div className="text-[6px] font-bold uppercase tracking-widest text-report-ink/60">Best-fit direction</div>
+          <div className="truncate text-[9px] font-extrabold" title={analysis?.result_role ?? strongest.name}>{analysis?.result_role ?? strongest.name}</div>
+        </div>
+      </div>
+      <div className="rounded-sm border border-report-line bg-report-paper px-2 py-1.5">
+        <div className="flex items-center justify-between text-[7px] font-bold uppercase tracking-wide text-report-ink/60">
+          <span>Overall {overall}%</span><span>Role fit {roleFit}%</span>
+        </div>
+        <div className="relative mt-2 h-2 rounded-full bg-report-line">
+          <span className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-report-paper bg-report-ink" style={{ left: `${clamp(overall)}%` }} />
+          <span className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-report-paper bg-report-sun" style={{ left: `${clamp(roleFit)}%` }} />
+        </div>
+        <div className="mt-1 flex justify-between text-[6px] font-bold text-report-ink/40"><span>0</span><span>50</span><span>100</span></div>
+      </div>
+      <div className="grid grid-cols-2 gap-1.5">
+        <div className="flex min-w-0 items-center gap-1.5 rounded-sm border border-report-line bg-report-paper px-1.5 py-1">
+          <CheckCircle2 className="h-4 w-4 shrink-0 text-report-sage" />
+          <div className="min-w-0"><div className="text-[6px] font-bold uppercase tracking-wide text-report-ink/50">Already aligned</div><div className="truncate text-[8px] font-extrabold text-report-ink" title={analysis?.alignments?.[0] ?? strongest.name}>{analysis?.alignments?.[0] ?? strongest.name}</div></div>
+        </div>
+        <div className="flex min-w-0 items-center gap-1.5 rounded-sm border border-report-line bg-report-paper px-1.5 py-1">
+          <Target className="h-4 w-4 shrink-0 text-report-gold" />
+          <div className="min-w-0"><div className="text-[6px] font-bold uppercase tracking-wide text-report-ink/50">Develop next</div><div className="truncate text-[8px] font-extrabold text-report-ink" title={analysis?.gaps?.[0] ?? focus.name}>{analysis?.gaps?.[0] ?? focus.name}</div></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ActionTimeline({ items }: { items: { priority: string; title: string; outcome?: string; timeframe: string }[] }) {
+  return (
+    <div className="grid h-full grid-cols-3 gap-1.5">
       {items.slice(0, 3).map((item, index) => (
-        <div key={`${item.title}-${index}`} className="relative z-10 flex items-center gap-2">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 border-report-paper bg-report-sun text-[11px] font-extrabold text-report-ink">{index + 1}</span>
-          <div className="min-w-0 flex-1 rounded border border-report-line bg-report-paper px-2 py-1">
-            <div className="truncate text-[9px] font-bold text-report-ink" title={item.title}>{item.title}</div>
-            <div className="text-[7px] font-semibold uppercase tracking-wide text-report-ink/55">{item.priority} · {item.timeframe}</div>
+        <div key={`${item.title}-${index}`} className="relative flex min-w-0 flex-col overflow-hidden rounded-sm border border-report-line bg-report-paper p-1.5 pt-2">
+          <span className="absolute inset-x-0 top-0 h-1 bg-report-sun" />
+          <div className="flex items-center justify-between gap-1">
+            <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-report-ink text-[10px] font-extrabold text-report-sun">{index + 1}</span>
+            <span className="rounded-full bg-report-cream px-1.5 py-0.5 text-[6px] font-extrabold uppercase tracking-wide text-report-gold">{item.priority}</span>
           </div>
+          <div className="mt-2 line-clamp-2 text-[8px] font-extrabold leading-tight text-report-ink" title={item.title}>{item.title}</div>
+          {item.outcome && <div className="mt-1 line-clamp-2 text-[7px] font-medium leading-tight text-report-ink/55" title={item.outcome}>{item.outcome}</div>}
+          <div className="mt-auto pt-1 text-[6.5px] font-bold uppercase tracking-wide text-report-gold">{item.timeframe}</div>
         </div>
       ))}
-      {items.length === 0 && <div className="grid h-full place-items-center text-[10px] text-report-ink/60">No actions generated</div>}
+      {items.length === 0 && <div className="col-span-3 grid h-full place-items-center text-[10px] text-report-ink/60">No actions generated</div>}
     </div>
   );
 }
@@ -346,6 +402,9 @@ function Landscape() {
   const profile = getPersonalityProfile(report.type_code);
   const roleAnalysis = dim?.role_analysis;
   const roleFit = clamp(roleAnalysis?.fit_score ?? overall);
+  const profileClarity = poles
+    ? Math.round(([ [poles.E, poles.I], [poles.S, poles.N], [poles.T, poles.F], [poles.J, poles.P] ].reduce((sum, pair) => sum + Math.max(...pair), 0)) / 4)
+    : overall;
   const behaviour = poles
     ? behaviourMetrics(poles).map((item) => ({ name: item.label, value: item.value }))
     : sectionData;
@@ -421,18 +480,15 @@ function Landscape() {
               <header className="flex h-[82px] shrink-0 items-center justify-between gap-4 rounded-md border border-report-line bg-report-paper/95 px-4">
                 <div className="flex min-w-0 items-center gap-4">
                   <Logo size="sm" />
-                  <span className="h-11 w-px bg-report-line" />
                   <div className="min-w-0">
                     <p className="text-[8px] font-bold uppercase tracking-[0.24em] text-report-gold">Visual assessment infographic</p>
                     <h1 className="line-clamp-2 max-w-[430px] text-[18px] font-extrabold leading-tight text-report-ink">{a?.name ?? "Assessment Report"}</h1>
                     <p className="truncate text-[9px] font-semibold text-report-ink/60">{profile?.name ?? a?.tagline ?? "Capability at a glance"} · {submittedAt}</p>
                   </div>
                 </div>
-                <div className="hidden h-9 items-center gap-2 rounded-full bg-report-sun px-4 text-[9px] font-extrabold uppercase tracking-wider text-report-ink xl:flex">
-                  Analyse <span>→</span> Insights <span>→</span> Transform
-                </div>
                 <div className="flex shrink-0 items-center gap-2">
                   <MiniGauge value={overall} label="Overall score" />
+                  {poles && <MiniGauge value={profileClarity} label="Profile clarity" />}
                   {roleAnalysis && <MiniGauge value={roleFit} label="Target role fit" />}
                 </div>
               </header>
@@ -484,8 +540,8 @@ function Landscape() {
                   <SectionPerformance data={displaySections} />
                 </Panel>
 
-                <Panel title="Capability Dot Plot" icon={Zap} className="col-span-4">
-                  <CapabilityDots data={rankedBehaviour} />
+                <Panel title="Role Alignment & Development" icon={Zap} className="col-span-4">
+                  <RoleAlignment analysis={roleAnalysis} overall={overall} roleFit={roleFit} strongest={strongest} focus={focus} />
                 </Panel>
 
                 <Panel title="Priority Action Path" icon={CheckCircle2} className="col-span-4">
@@ -504,22 +560,22 @@ function Landscape() {
       </main>
 
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-        <DialogContent className="no-print flex h-[94vh] w-[calc(100vw-2rem)] max-w-6xl flex-col gap-0 overflow-hidden p-0">
-          <DialogHeader className="border-b border-border px-6 py-4">
+        <DialogContent className="no-print flex h-dvh w-screen max-w-none flex-col gap-0 overflow-hidden rounded-none border-0 p-0">
+          <DialogHeader className="shrink-0 border-b border-border px-6 py-3 pr-12">
             <DialogTitle>A4 landscape PDF preview</DialogTitle>
-            <DialogDescription>{pdfPreview?.pages.length ?? 0} landscape page · the preview matches the downloaded PDF</DialogDescription>
+            <DialogDescription>{pdfPreview?.pages.length ?? 0} landscape page · full-width preview matches the downloaded PDF</DialogDescription>
           </DialogHeader>
-          <div className="w-full min-w-0 overflow-y-auto bg-muted p-4 md:p-8">
-            <div className="mx-auto w-full max-w-[1123px] space-y-6">
+          <div className="min-h-0 w-full flex-1 overflow-y-auto bg-muted p-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:p-4">
+            <div className="mx-auto w-full space-y-4">
               {pdfPreview?.pages.map((page, index) => (
-                <figure key={index} className="space-y-2">
+                <figure key={index}>
                   <img src={page} alt={`Landscape report preview page ${index + 1}`} className="aspect-[297/210] w-full border border-border bg-card object-contain shadow-sm" />
-                  <figcaption className="text-center text-xs text-muted-foreground">Page {index + 1}</figcaption>
+                  <figcaption className="sr-only">Page {index + 1}</figcaption>
                 </figure>
               ))}
             </div>
           </div>
-          <div className="flex justify-end gap-2 border-t border-border bg-card px-6 py-4">
+          <div className="flex shrink-0 justify-end gap-2 border-t border-border bg-card px-6 py-3">
             <Button variant="outline" onClick={() => setPreviewOpen(false)}>Close</Button>
             <Button onClick={downloadPreview} disabled={!pdfPreview}><Download className="mr-2 h-4 w-4" />Download landscape PDF</Button>
           </div>
